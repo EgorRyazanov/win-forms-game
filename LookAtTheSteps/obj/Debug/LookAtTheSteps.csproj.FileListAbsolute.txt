@@ -1,0 +1,10 @@
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\bin\Debug\LookAtTheSteps.exe.config
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\bin\Debug\LookAtTheSteps.exe
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\bin\Debug\LookAtTheSteps.pdb
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.csproj.AssemblyReference.cache
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.csproj.SuggestedBindingRedirects.cache
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.Properties.Resources.resources
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.csproj.GenerateResource.cache
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.csproj.CoreCompileInputs.cache
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.exe
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.pdb
