@@ -55,11 +55,11 @@ namespace LookAtTheSteps
 
         public static MapBlocks[,] GetMap()
         {
-            return new [,] {{MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty}, 
-                {MapBlocks.Empty, MapBlocks.Lava , MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall , MapBlocks.Wall}, 
-                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Finish, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Wall},
-                {MapBlocks.Crossbow, MapBlocks.Empty , MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall},
-                {MapBlocks.Wall, MapBlocks.Wall , MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall},
+            return new [,] {{MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty}, 
+                {MapBlocks.Lava, MapBlocks.Empty , MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall , MapBlocks.Wall}, 
+                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Wall},
+                {MapBlocks.Empty, MapBlocks.Empty , MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall},
+                {MapBlocks.Wall, MapBlocks.Crossbow , MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall},
                 {MapBlocks.Empty, MapBlocks.Lava , MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Stone}
             };
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -12,6 +13,7 @@ namespace LookAtTheSteps
         public Image Circle;
         public Timer Timer;
         public Arrow Arrow;
+        public List<Arrow> Arrows = new List<Arrow>();
 
         public Form1()
         {
@@ -77,19 +79,61 @@ namespace LookAtTheSteps
                 Player.Move();
                 Invalidate();
             }
+            
 
             if (Map.ArrowIsMoving)
             {
-                if (Arrow.X == Arrow.PurposeX &&
-                    Arrow.Y == Arrow.PurposeY )
+                for (var i = 0; i < Arrows.Count; i++)
+                {
+                    if (Arrows[i].X == Arrows[i].PurposeX &&
+                        Arrows[i].Y == Arrows[i].PurposeY )
                     {
-                        Map.ArrowIsMoving = false;
-                        Arrow.DirX = 0;
-                        Arrow.DirY = 0;
+                        Arrows[i].DirX = 0;
+                        Arrows[i].DirY = 0;
+                        Arrows.Remove(Arrows[i]);
+                        Invalidate();
+                        continue;
+
                     }
-                Arrow.Move();
-                Invalidate();
+                    Arrows[i].Move();
+                    Invalidate();
+                }
+                if (Arrows.Count == 0)
+                    Map.ArrowIsMoving = false;
             }
+            if (Player.MadeMove)
+                        if (Map.HaveCrossbow)
+                        {
+                            var index = 0;
+                            if (Map.CrossbowsRow[Player.Position.Item1].Count > 0)
+                            {
+                                foreach (var i in Map.CrossbowsRow[Player.Position.Item1])
+                                    if (RowCanShoot(i, Player.Position.Item2))
+                                        if (Math.Abs(i - Player.Position.Item2) != 1) // когда расстояние 1 - просто вычитать хп
+                                        {
+                                            Arrow = new Arrow(i * Map.CellSize + 100, Player.Position.Item1 * Map.CellSize + 100);
+                                            Arrows.Add(Arrow);
+                                            ChangeArrowVelocity( Player.Position.Item1, i, index);
+                                            index++;
+                                            Invalidate();
+                                        }
+                            }
+                           
+                            if (Map.CrossbowsColumn[Player.Position.Item2].Count > 0)
+                            {
+                                foreach (var i in Map.CrossbowsColumn[Player.Position.Item2])
+                                    if (ColumnCanShoot(i, Player.Position.Item1))
+                                        if (Math.Abs(i - Player.Position.Item1) != 1) // когда расстояние 1 - просто вычитать хп
+                                        {
+                                            
+                                            Arrow = new Arrow(Player.Position.Item2 * Map.CellSize + 100, i * Map.CellSize + 100);
+                                            Arrows.Add(Arrow);
+                                            ChangeArrowVelocity( i, Player.Position.Item2, index);
+                                            Invalidate();
+                                        }
+                            }
+                            Player.MadeMove = false;
+                        }
         }
 
         protected override void OnPaint( PaintEventArgs e)
@@ -102,7 +146,8 @@ namespace LookAtTheSteps
                 GraphicsUnit.Pixel);
             Player.DrawInventory(g, 100, 100);
             if (Map.ArrowIsMoving)
-                g.DrawImage(Arrow.Image, Arrow.X, Arrow.Y, new Rectangle(new Point(0,0), new Size(25, 25)),
+                foreach (var arrow in Arrows)
+                    g.DrawImage(arrow.Image, arrow.X, arrow.Y, new Rectangle(new Point(0,0), new Size(25, 25)),
                         GraphicsUnit.Pixel);
         }
 
@@ -179,19 +224,19 @@ namespace LookAtTheSteps
             }
             Invalidate();
         }
-        public void ChangeArrowVelocity(int row, int column)
+        public void ChangeArrowVelocity(int row, int column, int index)
         {
             Map.ArrowIsMoving = true;
             if (Player.Position.Item2 - column < 0)
-                Arrow.DirX = -2;
+                Arrows[index].DirX = -2;
             if (Player.Position.Item2 - column > 0)
-                Arrow.DirX = 2;
+                Arrows[index].DirX = 2;
             if (Player.Position.Item1 - row < 0)
-                Arrow.DirY = -2;
+                Arrows[index].DirY = -2;
             if (Player.Position.Item1 - row > 0)
-                Arrow.DirY = 2;
-            Arrow.PurposeX = Player.Position.Item2 * Map.CellSize + 100;
-            Arrow.PurposeY = Player.Position.Item1 * Map.CellSize + 100;
+                Arrows[index].DirY = 2;
+            Arrows[index].PurposeX = Player.Position.Item2 * Map.CellSize + 100;
+            Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + 100;
         }
 
         public void ClickOnInventory(int X, int Y)
@@ -230,27 +275,13 @@ namespace LookAtTheSteps
                 100 + row * Map.CellSize, Map.CellSize, Map.CellSize);
         }
 
-        public double GetAngleX(int xPlayer, int xArrow)
-        {
-            if (xPlayer > xArrow)
-                return 0;
-            return 180;
-        }
-        
-        public double GetAngleY(int yPlayer, int yArrow)
-        {
-            if (yPlayer > yArrow)
-                return 90;
-            return 270;
-        }
-
         public void MoveOnMouse(object sender, MouseEventArgs e)
         {
             if (MapPressed(e.X, e.Y, e.Button) && !Player.IsInventoryPressed && !Map.ArrowIsMoving) // пофиксить момент, когда ты можешь скрыться от стрелы 
             {
                 var column = (e.X - 100)/ Map.CellSize;
                 var row = (e.Y - 100)/ Map.CellSize;
-                if (Player.Position.Item1 - row == 0 || Player.Position.Item2 - column == 0 &&
+                if ((Player.Position.Item1 - row == 0 || Player.Position.Item2 - column == 0) &&
                     Player.Position.Item1 - row + Player.Position.Item2 - column != 0)
                 {
                     if (PlayerCanMove(row, column)) // передвижение
@@ -297,42 +328,6 @@ namespace LookAtTheSteps
             if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.isPressed) // берем вещь из инвентаря
                 ClickOnInventory(e.X, e.Y);
             
-            
-            if (Player.MadeMove) // Автомат со стрелами (Есть проблема: если игрок попадает точку, где могут достать
-                                 // одновременно вертикальный и горизонтальный автоматы - будет работать только вертильканый)
-            {
-                if (Map.HaveCrossbow)
-                {
-                    if (Map.CrossbowsRow[Player.Position.Item1].Count > 0)
-                        foreach (var i in Map.CrossbowsRow[Player.Position.Item1])
-                            if (RowCanShoot(i, Player.Position.Item2))
-                                if (Math.Abs(i - Player.Position.Item2) != 1) // когда расстояние 1 - просто вычитать хп
-                                {
-                                    Arrow = new Arrow(i * Map.CellSize + 100, Player.Position.Item1 * Map.CellSize + 100);
-                                    Arrow.Angle = GetAngleX(Player.Position.Item2, i);
-                                    // if (Arrow.Angle != 0)
-                                    //     Arrow.Image.RotateFlip(RotateFlipType.Rotate180FlipY);
-                                    ChangeArrowVelocity( Player.Position.Item1, i);
-                                    Invalidate();
-                                }
-                    if (Map.CrossbowsColumn[Player.Position.Item2].Count > 0)
-                        foreach (var i in Map.CrossbowsColumn[Player.Position.Item2])
-                            if (ColumnCanShoot(i, Player.Position.Item1))
-                                if (Math.Abs(i - Player.Position.Item1) != 1) // когда расстояние 1 - просто вычитать хп
-                                {
-                                    Arrow = new Arrow(Player.Position.Item2 * Map.CellSize + 100, i * Map.CellSize + 100);
-                                    Arrow.Angle = GetAngleY(Player.Position.Item1, i);
-                                    // if (Arrow.Angle == 90)
-                                    //     Arrow.Image.RotateFlip(RotateFlipType.Rotate90FlipY);
-                                    // else
-                                    //     Arrow.Image.RotateFlip(RotateFlipType.Rotate270FlipY);
-                                    ChangeArrowVelocity( i, Player.Position.Item2);
-                                    Invalidate();
-                                }
-                }
-            
-                Player.MadeMove = false;
-            }
         }
     }
 }

@@ -15,9 +15,6 @@ namespace LookAtTheSteps
         public int PurposeX;
         public int PurposeY;
 
-        public double Angle;
-
-
         public Arrow(int x, int y)
         {
             X = x;
