@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace LookAtTheSteps
 {
@@ -12,19 +13,24 @@ namespace LookAtTheSteps
         Finish,
         Lava,
         ForcedLava,
-        Crossbow
+        Crossbow,
     }
     public static class Map
     {
         public static bool isPressed = false;
         public static Tuple<int, int> pressedPosition = new Tuple<int, int>(-1, -1); //Можно добавить класс Point
         
-        public const int MapHeigh = 6;
-        public const int MapWidth = 6;
+        public const int MapHeigh = 12;
+        public const int MapWidth = 14;
         public static MapBlocks[,] map = new MapBlocks[MapHeigh, MapWidth];
         public static int CellSize = 50;
-        
-        
+        public static Image StoneImage = new Bitmap(Path.Combine(new DirectoryInfo(
+            Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\Stone.png"));
+
+        public static Image LavaImage = new Bitmap(Path.Combine(new DirectoryInfo(
+            Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\Lava.png"));
+
+
         public static Dictionary<int, List<int>> CrossbowsColumn = new Dictionary<int, List<int>>();
         public static Dictionary<int, List<int>> CrossbowsRow = new Dictionary<int, List<int>>(); 
         public static bool HaveCrossbow;
@@ -55,12 +61,18 @@ namespace LookAtTheSteps
 
         public static MapBlocks[,] GetMap()
         {
-            return new [,] {{MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty}, 
-                {MapBlocks.Lava, MapBlocks.Empty , MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall , MapBlocks.Wall}, 
-                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Wall},
-                {MapBlocks.Empty, MapBlocks.Empty , MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall},
-                {MapBlocks.Wall, MapBlocks.Crossbow , MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall},
-                {MapBlocks.Empty, MapBlocks.Lava , MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Stone}
+            return new [,] {{MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Crossbow},
+                {MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall},
+                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
+                {MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty},
+                {MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty},
             };
         }
 
@@ -76,15 +88,16 @@ namespace LookAtTheSteps
                     if (map[y, x] == MapBlocks.Wall) // стена
                         g.FillRectangle(new SolidBrush(Color.Gray),
                             PointX, PointY, CellSize - 1, CellSize - 1);
-                    if (map[y, x] == MapBlocks.Stone) // камень
-                        g.FillRectangle(new SolidBrush(Color.Lavender),
-                            PointX, PointY, CellSize - 1, CellSize - 1);
+                    if (map[y, x] == MapBlocks.Stone)
+                    {
+                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, CellSize, CellSize);
+                        g.DrawImage(StoneImage,  PointX, PointY, 50, 50);
+                    } // камень
                     if (map[y, x] == MapBlocks.Finish) // финиш
                         g.FillRectangle(new SolidBrush(Color.Green),
                             PointX, PointY, CellSize - 1, CellSize - 1);
                     if (map[y, x] == MapBlocks.Lava) // финиш
-                        g.FillRectangle(new SolidBrush(Color.DarkRed),
-                            PointX, PointY, CellSize - 1, CellSize - 1);
+                        g.DrawImage(LavaImage,  PointX, PointY, 50, 50);
                     if (map[y, x] == MapBlocks.ForcedLava) // Заставленная лава
                         g.FillRectangle(new SolidBrush(Color.LightGray),
                             PointX, PointY, CellSize - 1, CellSize - 1);

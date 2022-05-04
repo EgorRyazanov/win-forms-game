@@ -6,7 +6,7 @@ namespace LookAtTheSteps
     public class Arrow
     {
         public Image Image = new Bitmap(Path.Combine(new DirectoryInfo(
-            Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\NewArrow.png"));
+            Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\fireball.png"));
         public int X;
         public int Y;
         public int DirX;

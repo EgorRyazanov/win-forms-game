@@ -53,6 +53,7 @@
         <Compile Include="Form1.Designer.cs">
             <DependentUpon>Form1.cs</DependentUpon>
         </Compile>
+        <Compile Include="Inventory.cs" />
         <Compile Include="Model\Map.cs" />
         <Compile Include="Player.cs" />
         <Compile Include="Program.cs" />
@@ -81,6 +82,9 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include=".gitignore.txt" />
+      <Content Include="Sprites\fireball.png" />
+      <Content Include="Sprites\Lava.png" />
+      <Content Include="Sprites\Stone.png" />
       <Content Include="Sprites\Circle.png" />
       <Content Include="Sprites\NewArrow.png" />
     </ItemGroup>

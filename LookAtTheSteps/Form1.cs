@@ -31,7 +31,7 @@ namespace LookAtTheSteps
             Map.Init();
             Circle = new Bitmap(Path.Combine(new DirectoryInfo
                 (Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\Circle.png"));
-            Player = new Player(100, 100, Circle, 2);
+            Player = new Player(100, 100, Circle, 2, 2);
             Player.Init();
             Timer.Start();
         }
@@ -90,6 +90,7 @@ namespace LookAtTheSteps
                     {
                         Arrows[i].DirX = 0;
                         Arrows[i].DirY = 0;
+                        Player.Health -= 1;
                         Arrows.Remove(Arrows[i]);
                         Invalidate();
                         continue;
@@ -102,38 +103,54 @@ namespace LookAtTheSteps
                     Map.ArrowIsMoving = false;
             }
             if (Player.MadeMove)
-                        if (Map.HaveCrossbow)
-                        {
-                            var index = 0;
-                            if (Map.CrossbowsRow[Player.Position.Item1].Count > 0)
+                if (Map.HaveCrossbow)
+                {
+                    var index = 0;
+                    if (Map.CrossbowsRow[Player.Position.Item1].Count > 0)
+                    {
+                        foreach (var i in Map.CrossbowsRow[Player.Position.Item1])
+                            if (RowCanShoot(i, Player.Position.Item2))
                             {
-                                foreach (var i in Map.CrossbowsRow[Player.Position.Item1])
-                                    if (RowCanShoot(i, Player.Position.Item2))
-                                        if (Math.Abs(i - Player.Position.Item2) != 1) // когда расстояние 1 - просто вычитать хп
-                                        {
-                                            Arrow = new Arrow(i * Map.CellSize + 100, Player.Position.Item1 * Map.CellSize + 100);
-                                            Arrows.Add(Arrow);
-                                            ChangeArrowVelocity( Player.Position.Item1, i, index);
-                                            index++;
-                                            Invalidate();
-                                        }
+                                if (Math.Abs(i - Player.Position.Item2) != 1)
+                                {
+                                    if (i > Player.Position.Item2)
+                                        Arrow = new Arrow(i * Map.CellSize + 76,
+                                            Player.Position.Item1 * Map.CellSize + 100);
+
+                                    else
+                                        Arrow = new Arrow((i + 1) * Map.CellSize + 100,
+                                            Player.Position.Item1 * Map.CellSize + 100);
+                                    Arrows.Add(Arrow);
+                                    ChangeArrowVelocity(Player.Position.Item1, i, index);
+                                    index++;
+                                    Invalidate();
+                                }
+                                else
+                                    Player.Health -= 1;
                             }
+                    }
                            
-                            if (Map.CrossbowsColumn[Player.Position.Item2].Count > 0)
+                    if (Map.CrossbowsColumn[Player.Position.Item2].Count > 0)
+                    {
+                        foreach (var i in Map.CrossbowsColumn[Player.Position.Item2])
+                            if (ColumnCanShoot(i, Player.Position.Item1))
                             {
-                                foreach (var i in Map.CrossbowsColumn[Player.Position.Item2])
-                                    if (ColumnCanShoot(i, Player.Position.Item1))
-                                        if (Math.Abs(i - Player.Position.Item1) != 1) // когда расстояние 1 - просто вычитать хп
-                                        {
-                                            
-                                            Arrow = new Arrow(Player.Position.Item2 * Map.CellSize + 100, i * Map.CellSize + 100);
-                                            Arrows.Add(Arrow);
-                                            ChangeArrowVelocity( i, Player.Position.Item2, index);
-                                            Invalidate();
-                                        }
+                                if (Math.Abs(i - Player.Position.Item1) != 1) 
+                                {
+                                    if (i > Player.Position.Item1)        
+                                        Arrow = new Arrow(Player.Position.Item2 * Map.CellSize + 100, i * Map.CellSize + 76);
+                                    else 
+                                        Arrow = new Arrow(Player.Position.Item2 * Map.CellSize + 100, (i + 1) * Map.CellSize + 100);
+                                    Arrows.Add(Arrow);
+                                    ChangeArrowVelocity( i, Player.Position.Item2, index);
+                                    Invalidate();
+                                }
+                                else
+                                    Player.Health -= 1;
                             }
-                            Player.MadeMove = false;
-                        }
+                    }
+                    Player.MadeMove = false;
+                }
         }
 
         protected override void OnPaint( PaintEventArgs e)
@@ -147,8 +164,7 @@ namespace LookAtTheSteps
             Player.DrawInventory(g, 100, 100);
             if (Map.ArrowIsMoving)
                 foreach (var arrow in Arrows)
-                    g.DrawImage(arrow.Image, arrow.X, arrow.Y, new Rectangle(new Point(0,0), new Size(25, 25)),
-                        GraphicsUnit.Pixel);
+                    g.DrawImage(arrow.Image,  arrow.X, arrow.Y, 50, 50);
         }
 
         public bool PlayerCanMove(int row, int column)
@@ -215,7 +231,7 @@ namespace LookAtTheSteps
             {
                 if (Map.map[row, column] == MapBlocks.Empty)
                     Map.map[row, column] = Player.Inventory[Player.PressedInventoryPosition];
-                else if (Map.map[row, column] == MapBlocks.Lava)
+                else
                     Map.map[row, column] = MapBlocks.ForcedLava;
                 Player.MadeMove = true;
                 Player.Inventory[Player.PressedInventoryPosition] = MapBlocks.Empty;
@@ -228,15 +244,32 @@ namespace LookAtTheSteps
         {
             Map.ArrowIsMoving = true;
             if (Player.Position.Item2 - column < 0)
+            {
                 Arrows[index].DirX = -2;
+                Arrows[index].PurposeX = (Player.Position.Item2 + 1) * Map.CellSize + 100;
+                Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + 100;
+            }
+
             if (Player.Position.Item2 - column > 0)
+            {
                 Arrows[index].DirX = 2;
+                Arrows[index].PurposeX = Player.Position.Item2 * Map.CellSize + 76;
+                Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + 100;
+            }
+            
             if (Player.Position.Item1 - row < 0)
+            {
                 Arrows[index].DirY = -2;
+                Arrows[index].PurposeX = Player.Position.Item2 * Map.CellSize + 100;
+                Arrows[index].PurposeY = (Player.Position.Item1 + 1) * Map.CellSize + 100;
+            }
+            
             if (Player.Position.Item1 - row > 0)
+            {
                 Arrows[index].DirY = 2;
-            Arrows[index].PurposeX = Player.Position.Item2 * Map.CellSize + 100;
-            Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + 100;
+                Arrows[index].PurposeX = Player.Position.Item2  * Map.CellSize + 100;
+                Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + 76;
+            }
         }
 
         public void ClickOnInventory(int X, int Y)
@@ -325,7 +358,7 @@ namespace LookAtTheSteps
             if (Player.IsInventoryPressed) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход
                 Player.IsInventoryPressed = false;
 
-            if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.isPressed) // берем вещь из инвентаря
+            if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.isPressed && !Map.ArrowIsMoving) // берем вещь из инвентаря
                 ClickOnInventory(e.X, e.Y);
             
         }

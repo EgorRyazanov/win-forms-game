@@ -15,8 +15,8 @@ namespace LookAtTheSteps
 
         public Image Sprite;
         public int Size;
-        
-        
+
+        public static int Health;
         public static int InventorySize;
         public static MapBlocks[] Inventory;
         public static bool IsInventoryPressed = false;
@@ -26,7 +26,7 @@ namespace LookAtTheSteps
         public int PurposeY;
 
 
-        public Player(int x, int y, Image sprite, int inventorySize) // инвентарь должен быть меньше ширины карты
+        public Player(int x, int y, Image sprite, int inventorySize, int health) // инвентарь должен быть меньше ширины карты
         {
             X = x;
             Y = y;
@@ -35,6 +35,7 @@ namespace LookAtTheSteps
             Position = new Tuple<int, int>(0, 0);
             InventorySize = inventorySize;
             Inventory = new MapBlocks[InventorySize];
+            Health = health;
         }
 
         
@@ -66,11 +67,16 @@ namespace LookAtTheSteps
             for (var i = 0; i < InventorySize; i++)
             {
                 if (Inventory[i] == MapBlocks.Empty)
+                {
+                    g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     g.FillRectangle(new SolidBrush(Color.Pink),
-                        PointX, PointY, Map.CellSize - 1, Map.CellSize - 1);
+                        PointX, PointY, Map.CellSize, Map.CellSize);
+                }
                 if (Inventory[i] == MapBlocks.Stone)
-                    g.FillRectangle(new SolidBrush(Color.Lavender),
-                        PointX, PointY, Map.CellSize - 1, Map.CellSize - 1);
+                {
+                    g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
+                    g.DrawImage(Map.StoneImage,  PointX, PointY, 50, 50);
+                };
                 PointX += Map.CellSize;
             }
         }
