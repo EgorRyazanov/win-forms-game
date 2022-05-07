@@ -10,10 +10,12 @@ namespace LookAtTheSteps
     public partial class Form1 : Form
     {
         public Player Player;
-        public Image Circle;
+        public Image Knight;
         public Timer Timer;
         public Arrow Arrow;
         public List<Arrow> Arrows = new List<Arrow>();
+        public Map Map;
+        public List<Level> Levels;
 
         public Form1()
         {
@@ -28,42 +30,92 @@ namespace LookAtTheSteps
 
         public void Init()
         {
-            Map.Init();
-            Circle = new Bitmap(Path.Combine(new DirectoryInfo
-                (Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\Circle.png"));
-            Player = new Player(100, 100, Circle, 2, 2);
+            Levels = new List<Level>();
+            Map = new Map(12, 14, new[,]
+            {
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, 
+                    MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Crossbow,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Crossbow
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },});
+            Knight = new Bitmap(Path.Combine(new DirectoryInfo
+                (Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\knight.png"));
+            Player = new Player(100, 100, Knight, 2, 2, 14);
             Player.Init();
             Timer.Start();
         }
-
-        public bool RowCanShoot(int arrowColumn, int playerColumn)
+        
+        protected override void OnPaint( PaintEventArgs e)
         {
-            if (playerColumn > arrowColumn)
-                arrowColumn++;
-            var minColumn = Math.Min(playerColumn, arrowColumn);
-            var maxColumn = Math.Max(playerColumn, arrowColumn);
-            for (var x = minColumn; x < maxColumn; x++)
-                if (Map.map[Player.Position.Item1, x] != MapBlocks.Empty 
-                    && Map.map[Player.Position.Item1, x] != MapBlocks.Finish
-                    && Map.map[Player.Position.Item1, x] != MapBlocks.ForcedLava)
-                    return false;
-            return true;
-        }
+            DoubleBuffered = true;
+            Graphics g = e.Graphics;
+            Drawing.DrawMap(g,100, 100, Map.map, Map.MapHeigh, Map.MapWidth);
+            // g.DrawImage(Player.Sprite, Player.X, Player.Y, 
+            //     new Rectangle(new Point(0,0), new Size(Player.Size, Player.Size)),
+            //     GraphicsUnit.Pixel);
+            g.DrawImage(Player.Sprite, Player.X, Player.Y, 50, 50);
+            Drawing.DrawInventory(g, 100, 100, Player.InventorySize, Player.Inventory, Map.MapWidth, Map.MapHeigh);
+            if (Map.ArrowIsMoving)
+                foreach (var arrow in Arrows)
+                    g.DrawImage(arrow.Image,  arrow.X, arrow.Y, 50, 50);
 
-        public bool ColumnCanShoot(int arrowRow, int playerRow)
-        {
-            if (playerRow > arrowRow)
-                arrowRow++;
-            var minRow = Math.Min(playerRow, arrowRow);
-            var maxRow = Math.Max(playerRow, arrowRow);
-            for (var y = minRow; y < maxRow; y++)
-                if (Map.map[y, Player.Position.Item2] != MapBlocks.Empty 
-                    && Map.map[y, Player.Position.Item2] != MapBlocks.Finish
-                    && Map.map[y, Player.Position.Item2] != MapBlocks.ForcedLava)
-                    return false;
-            return true;
         }
-
+        
         public void Update(object sender, EventArgs e)
         {
             if (Player.IsMoving)
@@ -102,14 +154,13 @@ namespace LookAtTheSteps
                 if (Arrows.Count == 0)
                     Map.ArrowIsMoving = false;
             }
-            if (Player.MadeMove)
-                if (Map.HaveCrossbow)
-                {
+            if (Player.MadeMove && Map.HaveCrossbow)
+            {
                     var index = 0;
                     if (Map.CrossbowsRow[Player.Position.Item1].Count > 0)
                     {
                         foreach (var i in Map.CrossbowsRow[Player.Position.Item1])
-                            if (RowCanShoot(i, Player.Position.Item2))
+                            if (Map.ArrowCanShootRow(i, Player.Position.Item2, Player.Position.Item1))
                             {
                                 if (Math.Abs(i - Player.Position.Item2) != 1)
                                 {
@@ -133,7 +184,7 @@ namespace LookAtTheSteps
                     if (Map.CrossbowsColumn[Player.Position.Item2].Count > 0)
                     {
                         foreach (var i in Map.CrossbowsColumn[Player.Position.Item2])
-                            if (ColumnCanShoot(i, Player.Position.Item1))
+                            if (Map.ArrowCanShootColumn(i, Player.Position.Item1, Player.Position.Item2))
                             {
                                 if (Math.Abs(i - Player.Position.Item1) != 1) 
                                 {
@@ -149,41 +200,8 @@ namespace LookAtTheSteps
                                     Player.Health -= 1;
                             }
                     }
-                    Player.MadeMove = false;
-                }
-        }
-
-        protected override void OnPaint( PaintEventArgs e)
-        {
-            DoubleBuffered = true;
-            Graphics g = e.Graphics;
-            Map.DrawMap(g,100, 100);
-            g.DrawImage(Player.Sprite, Player.X, Player.Y, 
-                new Rectangle(new Point(0,0), new Size(Player.Size, Player.Size)),
-                GraphicsUnit.Pixel);
-            Player.DrawInventory(g, 100, 100);
-            if (Map.ArrowIsMoving)
-                foreach (var arrow in Arrows)
-                    g.DrawImage(arrow.Image,  arrow.X, arrow.Y, 50, 50);
-        }
-
-        public bool PlayerCanMove(int row, int column)
-        {
-            var minRow = Math.Min(Player.Position.Item1, row);
-            var maxRow = Math.Max(Player.Position.Item1, row);
-            for (var x = minRow; x <= maxRow; x++)
-                if (Map.map[x, column] != MapBlocks.Empty 
-                    && Map.map[x, column] != MapBlocks.Finish
-                    && Map.map[x, column] != MapBlocks.ForcedLava)
-                    return false;
-            var minColumn = Math.Min(Player.Position.Item2, column);
-            var maxColumn = Math.Max(Player.Position.Item2, column);
-            for (var y = minColumn; y <= maxColumn; y++)
-                if (Map.map[row, y] != MapBlocks.Empty 
-                    && Map.map[row, y] != MapBlocks.Finish
-                    && Map.map[row, y] != MapBlocks.ForcedLava)
-                    return false;
-            return true;
+                Player.MadeMove = false;
+            }
         }
 
         public bool PlayerInventoryPressed(int X, int Y, MouseButtons button)
@@ -195,51 +213,7 @@ namespace LookAtTheSteps
                    && Y < 100 + Map.CellSize * (Map.MapHeigh + 2)
                    && !Player.IsMoving;
         }
-
-        public bool MapPressed(int X, int Y, MouseButtons button)
-        {
-            return button == MouseButtons.Left &&
-                   X - 100 > 0 && X < 100 + Map.GetWidth() &&
-                   Y - 100 > 0 && Y < 100 + Map.GetHeigh()
-                   && !Player.IsMoving;
-        }
-
-        public void ChangePlayerVelocity(int row, int column)
-        {
-            Player.IsMoving = true;
-            if (Player.Position.Item2 - column < 0)
-                Player.DirX = 5;
-            if (Player.Position.Item2 - column > 0)
-                Player.DirX = -5;
-            if (Player.Position.Item1 - row < 0)
-                Player.DirY = 5;
-            if (Player.Position.Item1 - row > 0)
-                Player.DirY = -5;
-            Player.PurposeX = column * Map.CellSize + 100;
-            Player.PurposeY = row * Map.CellSize + 100;
-            Player.Position = new Tuple<int, int>(row, column);
-        }
-
-        public void PlaceThingOnMap(int X, int Y)
-        {
-            var column = (X - 100)/ Map.CellSize;
-            var row = (Y - 100)/ Map.CellSize;
-            if (Math.Abs(Player.Position.Item1 - row) + 
-                Math.Abs(Player.Position.Item2 - column) == 1
-                && Map.map[row, column] == MapBlocks.Empty 
-                || Map.map[row, column] == MapBlocks.Lava)
-            {
-                if (Map.map[row, column] == MapBlocks.Empty)
-                    Map.map[row, column] = Player.Inventory[Player.PressedInventoryPosition];
-                else
-                    Map.map[row, column] = MapBlocks.ForcedLava;
-                Player.MadeMove = true;
-                Player.Inventory[Player.PressedInventoryPosition] = MapBlocks.Empty;
-                Player.IsInventoryPressed = false;
-                Player.PressedInventoryPosition = -1;
-            }
-            Invalidate();
-        }
+        
         public void ChangeArrowVelocity(int row, int column, int index)
         {
             Map.ArrowIsMoving = true;
@@ -276,54 +250,27 @@ namespace LookAtTheSteps
         {
             var column = (X - 100)/ Map.CellSize;
             var row = (Y - 100)/ Map.CellSize;
-            DrawRectangle(row, column, Color.Gold);
+            Drawing.DrawRectangle(row, column, Color.Gold, CreateGraphics());;
             Player.IsInventoryPressed = true;
             Player.PressedInventoryPosition = column - Map.MapWidth/2 + 1;
         }
 
-        public void TakeThingInInventory(int row, int column)
-        {
-            if (Map.pressedPosition.Item1 == row &&
-                Map.pressedPosition.Item2 == column)
-            {
-                for (var i = 0; i < Player.InventorySize; i++)
-                    if (Player.Inventory[i] == MapBlocks.Empty)
-                    {
-                        Player.Inventory[i] = Map.map[row, column];
-                        Map.map[row, column] = MapBlocks.Empty;
-                        Player.MadeMove = true;
-                        break;
-                    }
-            }
-
-            Map.pressedPosition = new Tuple<int, int>(-1, -1);
-            Map.isPressed = false;
-            Invalidate();
-        }
-
-        public void DrawRectangle(int row, int column, Color color)
-        {
-            Graphics g = CreateGraphics();
-            g.DrawRectangle(new Pen(color), 100 + column * Map.CellSize,
-                100 + row * Map.CellSize, Map.CellSize, Map.CellSize);
-        }
-
         public void MoveOnMouse(object sender, MouseEventArgs e)
         {
-            if (MapPressed(e.X, e.Y, e.Button) && !Player.IsInventoryPressed && !Map.ArrowIsMoving) // пофиксить момент, когда ты можешь скрыться от стрелы 
+            if (Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving) && !Player.IsInventoryPressed && !Map.ArrowIsMoving) // пофиксить момент, когда ты можешь скрыться от стрелы 
             {
                 var column = (e.X - 100)/ Map.CellSize;
                 var row = (e.Y - 100)/ Map.CellSize;
                 if ((Player.Position.Item1 - row == 0 || Player.Position.Item2 - column == 0) &&
                     Player.Position.Item1 - row + Player.Position.Item2 - column != 0)
                 {
-                    if (PlayerCanMove(row, column)) // передвижение
+                    if (Map.PlayerCanMove(row, column, Player.Position.Item1, Player.Position.Item2)) // передвижение
                     {
                         if (Map.isPressed)
                         {
                             if (Map.pressedPosition.Item1 == row &&
                                 Map.pressedPosition.Item2 == column)
-                                ChangePlayerVelocity(row, column);
+                                Player.ChangePlayerVelocity(row, column);
 
                             Map.pressedPosition = new Tuple<int, int>(-1, -1);
                             Map.isPressed = false;
@@ -331,7 +278,7 @@ namespace LookAtTheSteps
                         }
                         else
                         {
-                            DrawRectangle(row, column, Color.Red);
+                            Drawing.DrawRectangle(row, column, Color.Red, CreateGraphics());
                             Map.isPressed = true;
                             Map.pressedPosition = new Tuple<int, int>(row, column);
                         }
@@ -342,10 +289,13 @@ namespace LookAtTheSteps
                         Map.map[row, column] == MapBlocks.Stone && !Player.IsInventoryFull()) //взаимодействие с предметами
                     {
                         if (Map.isPressed)
-                            TakeThingInInventory(row, column);
+                        {
+                            Map.TakeThingInInventory(row, column, Player);
+                            Invalidate();
+                        }
                         else
                         {
-                            DrawRectangle(row, column, Color.Gold);
+                            Drawing.DrawRectangle(row, column, Color.Gold, CreateGraphics());;
                             Map.isPressed = true;
                             Map.pressedPosition = new Tuple<int, int>(row, column);
                         }
@@ -353,8 +303,11 @@ namespace LookAtTheSteps
                 }
             }
 
-            if (Player.IsInventoryPressed && MapPressed(e.X, e.Y, e.Button))
-                PlaceThingOnMap(e.X, e.Y);
+            if (Player.IsInventoryPressed && Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving))
+            {
+                Map.PlaceThingOnMap(e.X, e.Y, Player);
+                Invalidate();
+            }
             if (Player.IsInventoryPressed) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход
                 Player.IsInventoryPressed = false;
 

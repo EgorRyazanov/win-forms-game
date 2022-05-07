@@ -16,17 +16,18 @@ namespace LookAtTheSteps
         public Image Sprite;
         public int Size;
 
-        public static int Health;
-        public static int InventorySize;
-        public static MapBlocks[] Inventory;
-        public static bool IsInventoryPressed = false;
-        public static int PressedInventoryPosition = -1;
+        public int Health;
+        public int Moves;
+        public int InventorySize;
+        public MapBlocks[] Inventory;
+        public bool IsInventoryPressed = false;
+        public int PressedInventoryPosition = -1;
 
         public int PurposeX;
         public int PurposeY;
 
 
-        public Player(int x, int y, Image sprite, int inventorySize, int health) // инвентарь должен быть меньше ширины карты
+        public Player(int x, int y, Image sprite, int inventorySize, int health, int moves) // инвентарь должен быть меньше ширины карты
         {
             X = x;
             Y = y;
@@ -36,10 +37,11 @@ namespace LookAtTheSteps
             InventorySize = inventorySize;
             Inventory = new MapBlocks[InventorySize];
             Health = health;
+            Moves = moves;
         }
 
         
-        public static void Init()
+        public void Init()
         {
             Inventory = GetInventory();
         }
@@ -53,32 +55,28 @@ namespace LookAtTheSteps
 
         }
 
-        public static MapBlocks[] GetInventory()
+        public MapBlocks[] GetInventory()
         {
             MapBlocks[] array = new MapBlocks[InventorySize];
             for (var i = 0; i < InventorySize; i++)
                 array[i] = MapBlocks.Empty;
             return array;
         }
-        public static void DrawInventory(Graphics g, int PointX, int PointY)
+        
+        public void ChangePlayerVelocity(int row, int column)
         {
-            PointX += Map.CellSize * (Map.MapWidth / 2 - 1);
-            PointY += Map.CellSize * (Map.MapHeigh + 1);
-            for (var i = 0; i < InventorySize; i++)
-            {
-                if (Inventory[i] == MapBlocks.Empty)
-                {
-                    g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
-                    g.FillRectangle(new SolidBrush(Color.Pink),
-                        PointX, PointY, Map.CellSize, Map.CellSize);
-                }
-                if (Inventory[i] == MapBlocks.Stone)
-                {
-                    g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
-                    g.DrawImage(Map.StoneImage,  PointX, PointY, 50, 50);
-                };
-                PointX += Map.CellSize;
-            }
+            IsMoving = true;
+            if (Position.Item2 - column < 0)
+                DirX = 5;
+            if (Position.Item2 - column > 0)
+                DirX = -5;
+            if (Position.Item1 - row < 0)
+                DirY = 5;
+            if (Position.Item1 - row > 0)
+                DirY = -5;
+            PurposeX = column * Map.CellSize + 100;
+            PurposeY = row * Map.CellSize + 100;
+            Position = new Tuple<int, int>(row, column);
         }
 
         public void Move()

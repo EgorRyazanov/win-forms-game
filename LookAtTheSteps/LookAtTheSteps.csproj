@@ -47,6 +47,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Arrow.cs" />
+        <Compile Include="Drawing.cs" />
         <Compile Include="Form1.cs">
             <SubType>Form</SubType>
         </Compile>
@@ -54,6 +55,7 @@
             <DependentUpon>Form1.cs</DependentUpon>
         </Compile>
         <Compile Include="Inventory.cs" />
+        <Compile Include="Level.cs" />
         <Compile Include="Model\Map.cs" />
         <Compile Include="Player.cs" />
         <Compile Include="Program.cs" />
@@ -83,6 +85,7 @@
     <ItemGroup>
       <Content Include=".gitignore.txt" />
       <Content Include="Sprites\fireball.png" />
+      <Content Include="Sprites\knight.png" />
       <Content Include="Sprites\Lava.png" />
       <Content Include="Sprites\Stone.png" />
       <Content Include="Sprites\Circle.png" />

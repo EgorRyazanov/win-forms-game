@@ -26,5 +26,6 @@ namespace LookAtTheSteps
             X += DirX;
             Y += DirY;
         }
+        
     }
 }
