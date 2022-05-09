@@ -118,6 +118,7 @@ namespace LookAtTheSteps
         
         public void Update(object sender, EventArgs e)
         {
+            ShowMoves.Text = Player.Moves.ToString();
             if (Player.IsMoving)
             {
                 if (Player.X == Player.PurposeX &&
@@ -257,7 +258,12 @@ namespace LookAtTheSteps
 
         public void MoveOnMouse(object sender, MouseEventArgs e)
         {
-            if (Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving) && !Player.IsInventoryPressed && !Map.ArrowIsMoving) // пофиксить момент, когда ты можешь скрыться от стрелы 
+            if (Player.Health <= 0)
+                Player.IsAlive = false;
+            if (Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving) && !Player.IsInventoryPressed 
+                                                                    && Player.IsHaveSteps 
+                                                                    && !Map.ArrowIsMoving
+                                                                    && Player.IsAlive) // пофиксить момент, когда ты можешь скрыться от стрелы 
             {
                 var column = (e.X - 100)/ Map.CellSize;
                 var row = (e.Y - 100)/ Map.CellSize;
@@ -270,7 +276,10 @@ namespace LookAtTheSteps
                         {
                             if (Map.pressedPosition.Item1 == row &&
                                 Map.pressedPosition.Item2 == column)
+                            {
                                 Player.ChangePlayerVelocity(row, column);
+                                Player.Moves -= 1;
+                            }
 
                             Map.pressedPosition = new Tuple<int, int>(-1, -1);
                             Map.isPressed = false;
@@ -303,15 +312,20 @@ namespace LookAtTheSteps
                 }
             }
 
-            if (Player.IsInventoryPressed && Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving))
+            if (Player.Moves == 0)
+                Player.IsHaveSteps = false;
+
+            if (Player.IsInventoryPressed && Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving)
+            && Player.IsHaveSteps && Player.IsAlive)
             {
                 Map.PlaceThingOnMap(e.X, e.Y, Player);
+                Player.Moves -= 1;
                 Invalidate();
             }
-            if (Player.IsInventoryPressed) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход
+            if (Player.IsInventoryPressed && Player.IsHaveSteps && Player.IsAlive) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход
                 Player.IsInventoryPressed = false;
 
-            if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.isPressed && !Map.ArrowIsMoving) // берем вещь из инвентаря
+            if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.isPressed && !Map.ArrowIsMoving && Player.IsHaveSteps && Player.IsAlive) // берем вещь из инвентаря
                 ClickOnInventory(e.X, e.Y);
             
         }

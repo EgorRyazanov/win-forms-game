@@ -8,3 +8,4 @@ C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheS
 C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.csproj.CoreCompileInputs.cache
 C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.exe
 C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.pdb
+C:\Users\Aricsy\RiderProjects\LookAtTheSteps\LookAtTheSteps\obj\Debug\LookAtTheSteps.Form1.resources

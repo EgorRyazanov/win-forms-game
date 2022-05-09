@@ -21,6 +21,8 @@ namespace LookAtTheSteps
         public int InventorySize;
         public MapBlocks[] Inventory;
         public bool IsInventoryPressed = false;
+        public bool IsAlive = true;
+        public bool IsHaveSteps = true;
         public int PressedInventoryPosition = -1;
 
         public int PurposeX;

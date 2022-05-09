@@ -1,4 +1,7 @@
-﻿namespace LookAtTheSteps
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace LookAtTheSteps
 {
     partial class Form1
     {
@@ -29,11 +32,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.ShowMoves = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.ShowMoves.Location = new System.Drawing.Point(450, 34);
+            this.ShowMoves.Name = "label1";
+            this.ShowMoves.Size = new System.Drawing.Size(25, 25);
+            this.ShowMoves.TabIndex = 0;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.Controls.Add(this.ShowMoves);
+            this.Name = "Form1";
+            this.Text = "LookAtTheSteps";
+            this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Label ShowMoves;
 
         #endregion
     }
