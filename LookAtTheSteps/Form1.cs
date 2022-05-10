@@ -10,28 +10,23 @@ namespace LookAtTheSteps
     public partial class Form1 : Form
     {
         public Player Player;
-        public Image Knight;
+        public Image Knight = new Bitmap(Path.Combine(new DirectoryInfo
+            (Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\knight.png"));
         public Timer Timer;
         public Arrow Arrow;
-        public List<Arrow> Arrows = new List<Arrow>();
+        public List<Arrow> Arrows;
         public Map Map;
         public List<Level> Levels;
+        public bool IsButtomPressed = false;
+        public int IndexLevel;
+        
 
         public Form1()
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
-            Timer = new Timer();
-            Timer.Interval = 5;
-            Timer.Tick += Update;
-            Init();
-            MouseClick += MoveOnMouse;
-        }
-
-        public void Init()
-        {
             Levels = new List<Level>();
-            Map = new Map(12, 14, new[,]
+            var firstMap = new Map(12, 14, new[,]
             {
                 {
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, 
@@ -92,28 +87,106 @@ namespace LookAtTheSteps
                     MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty,
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
-                },});
-            Knight = new Bitmap(Path.Combine(new DirectoryInfo
-                (Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\knight.png"));
-            Player = new Player(100, 100, Knight, 2, 2, 14);
+                },}); 
+            var firstPlayer = new Player(100, 100, Knight, 2, 2, 14);
+            Levels.Add(new Level(firstMap, firstPlayer));
+            var secondMap = new Map(12, 14, new[,]
+            {
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, 
+                    MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Crossbow,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Finish, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Crossbow
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Crossbow, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },}); 
+            var secondPlayer  = new Player(100, 100, Knight, 2, 4, 15);
+            Levels.Add(new Level(secondMap, secondPlayer));
+        }
+
+        public void Init()
+        {
+            Map = Levels[IndexLevel].Map;
+            Player = Levels[IndexLevel].Player;
+            Timer = new Timer();
+            Timer.Interval = 5;
+            Timer.Tick += Update;
+            MouseClick += MoveOnMouse;
             Player.Init();
+            Arrows = new List<Arrow>();
             Timer.Start();
+            Invalidate();
         }
         
         protected override void OnPaint( PaintEventArgs e)
         {
             DoubleBuffered = true;
             Graphics g = e.Graphics;
-            Drawing.DrawMap(g,100, 100, Map.map, Map.MapHeigh, Map.MapWidth);
-            // g.DrawImage(Player.Sprite, Player.X, Player.Y, 
-            //     new Rectangle(new Point(0,0), new Size(Player.Size, Player.Size)),
-            //     GraphicsUnit.Pixel);
-            g.DrawImage(Player.Sprite, Player.X, Player.Y, 50, 50);
-            Drawing.DrawInventory(g, 100, 100, Player.InventorySize, Player.Inventory, Map.MapWidth, Map.MapHeigh);
-            if (Map.ArrowIsMoving)
-                foreach (var arrow in Arrows)
-                    g.DrawImage(arrow.Image,  arrow.X, arrow.Y, 50, 50);
+            if (IsButtomPressed)
+            {
+                Drawing.DrawMap(g,100, 100, Map.map, Map.MapHeigh, Map.MapWidth);
+                // g.DrawImage(Player.Sprite, Player.X, Player.Y, 
+                //     new Rectangle(new Point(0,0), new Size(Player.Size, Player.Size)),
+                //     GraphicsUnit.Pixel);
+                g.DrawImage(Player.Sprite, Player.X, Player.Y, 50, 50);
+                Drawing.DrawInventory(g, 100, 100, Player.InventorySize, Player.Inventory, Map.MapWidth, Map.MapHeigh);
+                if (Map.ArrowIsMoving)
+                    foreach (var arrow in Arrows)
+                        g.DrawImage(arrow.Image,  arrow.X, arrow.Y, 50, 50);
 
+            }
         }
         
         public void Update(object sender, EventArgs e)
@@ -300,6 +373,7 @@ namespace LookAtTheSteps
                         if (Map.isPressed)
                         {
                             Map.TakeThingInInventory(row, column, Player);
+                            Player.Moves -= 1;
                             Invalidate();
                         }
                         else
@@ -328,6 +402,48 @@ namespace LookAtTheSteps
             if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.isPressed && !Map.ArrowIsMoving && Player.IsHaveSteps && Player.IsAlive) // берем вещь из инвентаря
                 ClickOnInventory(e.X, e.Y);
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            IndexLevel = 0;
+            Init();
+            IsButtomPressed = true;
+            this.button1.Hide();
+            button3.Hide();
+            button4.Hide();
+            this.button2.Show();
+            this.ShowMoves.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            IsButtomPressed = false;
+            this.button1.Show();
+            button3.Show();
+            button4.Show();
+            this.button2.Hide();
+            this.ShowMoves.Hide();
+            Timer.Tick -= Update;
+            MouseClick -= MoveOnMouse;
+            Invalidate();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            IndexLevel = 1;
+            Init();
+            IsButtomPressed = true;
+            this.button1.Hide();
+            button3.Hide();
+            button4.Hide();
+            this.button2.Show();
+            this.ShowMoves.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

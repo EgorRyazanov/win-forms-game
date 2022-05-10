@@ -89,6 +89,7 @@
       <Content Include=".gitignore.txt" />
       <Content Include="Sprites\fireball.png" />
       <Content Include="Sprites\knight.png" />
+      <Content Include="Sprites\123.png" />
       <Content Include="Sprites\Lava.png" />
       <Content Include="Sprites\Stone.png" />
       <Content Include="Sprites\Circle.png" />

@@ -20,8 +20,8 @@ namespace LookAtTheSteps
         public bool isPressed;
         public static Tuple<int, int> pressedPosition;
 
-        public int MapHeigh = 12;
-        public int MapWidth = 14;
+        public int MapHeigh;
+        public int MapWidth;
         public MapBlocks[,] map;
         public static int CellSize = 50;
 
@@ -40,6 +40,7 @@ namespace LookAtTheSteps
             CrossbowsRow = new Dictionary<int, List<int>>();
             ArrowIsMoving = false;
             map = new MapBlocks[MapHeigh, MapWidth];
+            isPressed = false;
             for (var row = 0; row < mapHeigh; row++)
                 for (var column = 0; column < mapHeigh; column++)
                     map[row, column] = mapCopy[row, column];

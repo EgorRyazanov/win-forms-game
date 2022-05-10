@@ -13,33 +13,59 @@ namespace LookAtTheSteps
         
         public static void DrawMap(Graphics g, int PointX, int PointY, MapBlocks[,] map, int mapHeigh, int mapWidth)
         {
-            // g.FillRectangle(new SolidBrush(Color.DimGray), 0, 0, 2000, 2000);
+            g.FillRectangle(new SolidBrush(Color.LightGray), 0, 0, 2000, 2000);
             var startY = PointY;
             for (var x = 0; x < mapWidth; x++)
             {
                 for (var y = 0; y < mapHeigh; y++)
                 {
-                    if (map[y, x] == MapBlocks.Empty) // пустота
+                    if (map[y, x] == MapBlocks.Empty)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.White),
+                            PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
                         g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
-                    if (map[y, x] == MapBlocks.Wall) // стена
+                    } // пустота
+
+                    if (map[y, x] == MapBlocks.Wall)
+                    {
                         g.FillRectangle(new SolidBrush(Color.Gray),
-                            PointX, PointY, Map.CellSize - 1, Map.CellSize - 1);
+                            PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
+                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
+                    } // стена
+                    
                     if (map[y, x] == MapBlocks.Stone)
                     {
-                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                         g.DrawImage(StoneImage,  PointX, PointY, 50, 50);
+                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     } // камень
-                    if (map[y, x] == MapBlocks.Finish) // финиш
+
+                    if (map[y, x] == MapBlocks.Finish)
+                    {
                         g.FillRectangle(new SolidBrush(Color.Green),
-                            PointX, PointY, Map.CellSize - 1, Map.CellSize - 1);
-                    if (map[y, x] == MapBlocks.Lava) // финиш
+                            PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
+                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
+                    } // финиш
+
+                    if (map[y, x] == MapBlocks.Lava)
+                    {
                         g.DrawImage(LavaImage,  PointX, PointY, 50, 50);
-                    if (map[y, x] == MapBlocks.ForcedLava) // Заставленная лава
+                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
+                    } // Лава
+
+                    if (map[y, x] == MapBlocks.ForcedLava)
+                    {
                         g.FillRectangle(new SolidBrush(Color.LightGray),
-                            PointX, PointY, Map.CellSize - 1, Map.CellSize - 1);
-                    if (map[y, x] == MapBlocks.Crossbow) // Арбалет
+                            PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
+                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
+                    } // Заставленная лава
+
+                    if (map[y, x] == MapBlocks.Crossbow)
+                    {
                         g.FillRectangle(new SolidBrush(Color.Aqua),
-                            PointX, PointY, Map.CellSize - 1, Map.CellSize - 1);
+                            PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
+                        g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
+                    } // Арбалет
+                    
                     PointY += Map.CellSize;
                 }
 
@@ -59,7 +85,7 @@ namespace LookAtTheSteps
                 {
                     g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     g.FillRectangle(new SolidBrush(Color.Pink),
-                        PointX, PointY, Map.CellSize, Map.CellSize);
+                        PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
                 }
                 if (inventory[i] == MapBlocks.Stone)
                 {

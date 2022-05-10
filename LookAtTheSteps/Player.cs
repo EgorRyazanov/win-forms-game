@@ -9,7 +9,7 @@ namespace LookAtTheSteps
         public int Y;
         public int DirX;
         public int DirY;
-        public bool IsMoving = false;
+        public bool IsMoving;
         public Tuple<int, int> Position;
         public bool MadeMove;
 
@@ -20,9 +20,9 @@ namespace LookAtTheSteps
         public int Moves;
         public int InventorySize;
         public MapBlocks[] Inventory;
-        public bool IsInventoryPressed = false;
-        public bool IsAlive = true;
-        public bool IsHaveSteps = true;
+        public bool IsInventoryPressed;
+        public bool IsAlive;
+        public bool IsHaveSteps;
         public int PressedInventoryPosition = -1;
 
         public int PurposeX;
@@ -40,6 +40,10 @@ namespace LookAtTheSteps
             Inventory = new MapBlocks[InventorySize];
             Health = health;
             Moves = moves;
+            IsMoving = false;
+            IsInventoryPressed = false;
+            IsAlive = true;
+            IsHaveSteps = true;
         }
 
         

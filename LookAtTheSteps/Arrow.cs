@@ -19,6 +19,8 @@ namespace LookAtTheSteps
         {
             X = x;
             Y = y;
+            DirX = 0;
+            DirY = 0;
         }
         
         public void Move()
