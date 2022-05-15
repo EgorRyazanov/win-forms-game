@@ -68,7 +68,7 @@ namespace LookAtTheSteps
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
-                },}), new Player(Form1.WidthBorder + Map.CellSize * 7, Form1.HeightBorder + (Map.MapHeigh - 1) * Map.CellSize,  4, 14));
+                },}), new Player(Form1.WidthBorder + Map.CellSize * 7, Form1.HeightBorder + (Map.MapHeigh - 1) * Map.CellSize,  4, 14,Form1.WidthBorder, Form1.HeightBorder));
 
         private static Tuple<Map, Player> SecondLevel = new Tuple<Map, Player>(
             new Map(new[,]
@@ -133,7 +133,8 @@ namespace LookAtTheSteps
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
                     MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Stone
                 },
-            }), new Player(Form1.WidthBorder + Map.CellSize * 7, Form1.HeightBorder + (Map.MapHeigh - 1) * Map.CellSize, 1, 17));
+            }), new Player(Form1.WidthBorder + Map.CellSize * 7, Form1.HeightBorder + (Map.MapHeigh - 1) * Map.CellSize, 1, 17, 
+                Form1.WidthBorder, Form1.HeightBorder));
         
         private static Tuple<Map, Player> ThirdLevel = new Tuple<Map, Player>(
             new Map(new[,]
@@ -198,7 +199,7 @@ namespace LookAtTheSteps
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
                 },
-            }), new Player(Form1.WidthBorder, Form1.HeightBorder + Map.CellSize * 5, 11, 22));
+            }), new Player(Form1.WidthBorder, Form1.HeightBorder + Map.CellSize * 5, 11, 22,Form1.WidthBorder, Form1.HeightBorder));
         
         
         public static List<Tuple<Map, Player>> Levels = new List<Tuple<Map, Player>>( ){FirstLevel, SecondLevel, ThirdLevel};

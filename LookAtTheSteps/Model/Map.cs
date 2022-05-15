@@ -17,8 +17,8 @@ namespace LookAtTheSteps
 
     public class Map
     {
-        public bool isPressed;
-        public static Tuple<int, int> pressedPosition;
+        public bool IsPressed;
+        public static Tuple<int, int> PressedPosition;
 
         public static int MapHeigh = 12;
         public static int MapWidth = 14;
@@ -33,12 +33,12 @@ namespace LookAtTheSteps
 
         public Map(MapBlocks[,] mapCopy)
         {
-            pressedPosition = new Tuple<int, int>(-1, -1);
+            PressedPosition = new Tuple<int, int>(-1, -1);
             CrossbowsColumn = new Dictionary<int, List<int>>();
             CrossbowsRow = new Dictionary<int, List<int>>();
             ArrowIsMoving = false;
             map = new MapBlocks[MapHeigh, MapWidth];
-            isPressed = false;
+            IsPressed = false;
             for (var row = 0; row < MapHeigh; row++)
                 for (var column = 0; column < MapWidth; column++)
                     map[row, column] = mapCopy[row, column];
@@ -129,19 +129,19 @@ namespace LookAtTheSteps
             return true;
         }
 
-        public bool MapPressed(int X, int Y, MouseButtons button, bool isMoving)
+        public bool MapPressed(int x, int y, MouseButtons button, bool isMoving)
         {
             return button == MouseButtons.Left &&
-                   X - Form1.WidthBorder > 0 && X < Form1.WidthBorder + GetWidth() &&
-                   Y - Form1.HeightBorder > 0 && Y < Form1.HeightBorder + GetHeigh()
+                   x - Form1.WidthBorder > 0 && x < Form1.WidthBorder + GetWidth() &&
+                   y - Form1.HeightBorder > 0 && y < Form1.HeightBorder + GetHeigh()
                    && !isMoving;
         }
 
 
-        public void PlaceThingOnMap(int X, int Y, Player player) //переношу Player - возможна потеря 
+        public void PlaceThingOnMap(int x, int y, Player player, int widthBorder, int heightBorder) //переношу Player - возможна потеря 
         {
-            var column = (X - Form1.WidthBorder) / CellSize;
-            var row = (Y - Form1.HeightBorder) / CellSize;
+            var column = (x - widthBorder) / CellSize;
+            var row = (y - heightBorder) / CellSize;
             if (Math.Abs(player.Position.Item1 - row) +
                 Math.Abs(player.Position.Item2 - column) == 1
                 && map[row, column] == MapBlocks.Empty
@@ -160,8 +160,8 @@ namespace LookAtTheSteps
 
         public  void TakeThingInInventory(int row, int column, Player player) // та же проблема
         {
-            if (pressedPosition.Item1 == row &&
-                pressedPosition.Item2 == column)
+            if (PressedPosition.Item1 == row &&
+                PressedPosition.Item2 == column)
             {
                 for (var i = 0; i < Player.InventorySize; i++)
                     if (player.Inventory[i] == MapBlocks.Empty)
@@ -173,8 +173,8 @@ namespace LookAtTheSteps
                     }
             }
 
-            pressedPosition = new Tuple<int, int>(-1, -1);
-            isPressed = false;
+            PressedPosition = new Tuple<int, int>(-1, -1);
+            IsPressed = false;
         }
     }
 }

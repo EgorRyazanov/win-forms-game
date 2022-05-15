@@ -30,13 +30,13 @@ namespace LookAtTheSteps
         public int PurposeY;
 
 
-        public Player(int x, int y, int health, int moves) // инвентарь должен быть меньше ширины карты
+        public Player(int x, int y, int health, int moves, int widthBorder, int heightBorder) // инвентарь должен быть меньше ширины карты
         {
             X = x;
             Y = y;
             StartX = X;
             StartY = Y;
-            Position = new Tuple<int, int>((y - Form1.HeightBorder)/Map.CellSize, (x - Form1.WidthBorder)/Map.CellSize); 
+            Position = new Tuple<int, int>((y - heightBorder)/Map.CellSize, (x - widthBorder)/Map.CellSize); 
             Inventory = new MapBlocks[InventorySize];
             Health = health;
             StartHealth = Health;
