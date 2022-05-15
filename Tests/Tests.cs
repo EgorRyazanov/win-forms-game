@@ -341,7 +341,6 @@ namespace Tests
             && Player.IsHaveSteps && Player.IsAlive)
             {
                 Map.PlaceThingOnMap(x, y, Player, WidthBorder, HeightBorder);
-                Player.Moves -= 1;
             }
             
             if (Player.IsInventoryPressed && Player.IsHaveSteps && Player.IsAlive) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход

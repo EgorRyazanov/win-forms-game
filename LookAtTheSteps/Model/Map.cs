@@ -151,6 +151,7 @@ namespace LookAtTheSteps
                     map[row, column] = player.Inventory[player.PressedInventoryPosition];
                 else
                     map[row, column] = MapBlocks.ForcedLava;
+                player.Moves -= 1;
                 player.MadeMove = true;
                 player.Inventory[player.PressedInventoryPosition] = MapBlocks.Empty;
                 player.IsInventoryPressed = false;

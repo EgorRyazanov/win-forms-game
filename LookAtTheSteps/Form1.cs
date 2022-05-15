@@ -326,7 +326,6 @@ namespace LookAtTheSteps
             && Player.IsHaveSteps && Player.IsAlive)
             {
                 Map.PlaceThingOnMap(e.X, e.Y, Player, WidthBorder,HeightBorder);
-                Player.Moves -= 1;
                 Invalidate();
             }
             
