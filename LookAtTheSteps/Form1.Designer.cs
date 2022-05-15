@@ -32,7 +32,7 @@ namespace LookAtTheSteps
         /// </summary>
         private void InitializeComponent()
         {
-            // this.Instruction = new System.Windows.Forms.Label();
+            this.Instruction = new System.Windows.Forms.Label();
             this.ShowMoves = new System.Windows.Forms.Label();
             this.ZeroLevel = new System.Windows.Forms.Button();
             this.Menu = new System.Windows.Forms.Button();
@@ -49,36 +49,39 @@ namespace LookAtTheSteps
             this.StepsText = new System.Windows.Forms.Label();
             this.HealthText = new System.Windows.Forms.Label();
             this.RestartButtom = new System.Windows.Forms.Button();
+            ShowInstruction = new System.Windows.Forms.Button();
+            CloseInstructin = new System.Windows.Forms.Button();
             this.SuspendLayout();
 
 
-            // Instruction.Text = "Смысл игры:" + "\n" +
-            //                    "Вам нужно добраться до финиша за отведенное количество шагов. Игра нацелена на развитие логического мышления." +
-            //                    "\n " + "\n" + 
-            //                    "Инструкция:" + "\n" +
-            //                    "Карта построена по аналогии с шахматной доской, где вы можете двигаться только по горизонтали и вертикали." +
-            //                    "\n" +
-            //                    "Для того, чтобы сделать ход, нужно нажать на квадратик в возможной зоне движения игрока - он подсветится красным," + "\n" + 
-            //                    "нажмите еще раз на ту же область для подтверждения своего решения. Чтобы сбросить неверно выбранную клетку, нужно кликнуть в любую другую зону" +
-            //                    "\n" +
-            //                    "Для усложнения процесса на уровнях есть различные препятствия: лава и пушки, гарантированно наносящие персонажу урон." +
-            //                    "\n" +
-            //                    "Также присутствует объект, который можно забрать в инвентарь - камень, с его помощью вы можете закрывать лаву, тем самым превращая ее в проходимый квадратик." +
-            //                    "\n" +
-            //                    "Чтобы взять камень в инвентарь нужно сблизиться с ним до дистанции не более 1 клетки, далее нажать на него и подтвердить решение повторным кликом в ту же область." +
-            //                    "\n" +
-            //                    "Чтобы поставить камень, нужно нажать на клеточку в инвентаре и кликнуть в зону рядом с собой, также не более 1 клетки. Ставить камень можно только в пустую клетку и в лаву." +
-            //                    "\n" +
-            //                    "Нужно всегда следить за количеством здоровья и шагов!" + "\n" +
-            //                    "Удачи, у Вас все получится!";
-            // this.Instruction.BackColor = System.Drawing.Color.Transparent;
-            // this.Instruction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            // this.Instruction.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular);
-            // this.Instruction.Location = new System.Drawing.Point(50, 50);
-            // this.Instruction.Name = "ShowMoves";
-            // this.Instruction.Size = new System.Drawing.Size(2000, 900);
-            // this.Instruction.TabIndex = 0;
-            // this.Instruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            Instruction.Text = "Смысл игры:" + "\n" +
+                               "Вам нужно добраться до финиша за отведенное количество шагов. Игра нацелена на развитие логического мышления." +
+                               "\n " + "\n" + 
+                               "Инструкция:" + "\n" +
+                               "Карта построена по аналогии с шахматной доской, где вы можете двигаться только по горизонтали и вертикали." +
+                               "\n" +
+                               "Для того, чтобы сделать ход, нужно нажать на квадратик в возможной зоне движения игрока - он подсветится красным," + "\n" + 
+                               "нажмите еще раз на ту же область для подтверждения своего решения. Чтобы сбросить неверно выбранную клетку, нужно кликнуть в любую другую зону" +
+                               "\n" +
+                               "Для усложнения процесса на уровнях есть различные препятствия: лава и пушки, гарантированно наносящие персонажу урон." +
+                               "\n" +
+                               "Также присутствует объект, который можно забрать в инвентарь - камень, с его помощью вы можете закрывать лаву, тем самым превращая ее в проходимый квадратик." +
+                               "\n" +
+                               "Чтобы взять камень в инвентарь нужно сблизиться с ним до дистанции не более 1 клетки, далее нажать на него и подтвердить решение повторным кликом в ту же область." +
+                               "\n" +
+                               "Чтобы поставить камень, нужно нажать на клеточку в инвентаре и кликнуть в зону рядом с собой, также не более 1 клетки." + "\n" + 
+                               "Ставить камень можно только в пустую клетку и в лаву." + 
+                               "\n" +
+                               "Нужно дойти за зеленого квадрата, при этом следя за количеством здоровья и шагов" + "\n" + "\n"+
+                               "Удачи, у Вас все получится!";
+            this.Instruction.BackColor = System.Drawing.Color.Transparent;
+            this.Instruction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Instruction.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular);
+            this.Instruction.Location = new System.Drawing.Point(170, 50);
+            this.Instruction.Name = "Instruction";
+            this.Instruction.Size = new System.Drawing.Size(1700, 900);
+            this.Instruction.TabIndex = 0;
+            this.Instruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ShowMoves
             // 
@@ -288,8 +291,37 @@ namespace LookAtTheSteps
             this.HealthText.TabIndex = 14;
             this.HealthText.Text = "Здоровье:";
             this.HealthText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            
+            ShowInstruction.FlatAppearance.BorderSize = 0;
+            ShowInstruction.FlatStyle = FlatStyle.Flat;
+            this.ShowInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ShowInstruction.BackColor = System.Drawing.Color.Transparent;
+            this.ShowInstruction.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
+            this.ShowInstruction.Location = new System.Drawing.Point(5, 130);
+            this.ShowInstruction.Name = "ShowInstruction";
+            this.ShowInstruction.Size = new System.Drawing.Size(180, 80);
+            this.ShowInstruction.TabIndex = 15;
+            this.ShowInstruction.Text = "Показать" + "\n" + "Инструкцию";
+            this.ShowInstruction.UseVisualStyleBackColor = false;
+            this.ShowInstruction.Click += new System.EventHandler(this.ShowInstructionLabel);
+            
+            
+            CloseInstructin.FlatAppearance.BorderSize = 0;
+            CloseInstructin.FlatStyle = FlatStyle.Flat;
+            this.CloseInstructin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CloseInstructin.BackColor = System.Drawing.Color.Transparent;
+            this.CloseInstructin.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
+            this.CloseInstructin.Location = new System.Drawing.Point(5, 130);
+            this.CloseInstructin.Name = "CloseInstructionLabel";
+            this.CloseInstructin.Size = new System.Drawing.Size(180, 80);
+            this.CloseInstructin.TabIndex = 15;
+            this.CloseInstructin.Text = "Скрыть" + "\n" + "Инструкцию";
+            this.CloseInstructin.UseVisualStyleBackColor = false;
+            this.CloseInstructin.Click += new System.EventHandler(this.CloseInstructionLabel);
+            
+            
             // 
-            // button1
+            // RestartButtom
             // 
             RestartButtom.FlatAppearance.BorderSize = 0;
             RestartButtom.FlatStyle = FlatStyle.Flat;
@@ -309,7 +341,9 @@ namespace LookAtTheSteps
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(921, 790);
-            // Controls.Add(Instruction);
+            Controls.Add(CloseInstructin);
+            Controls.Add(Instruction);
+            Controls.Add(ShowInstruction);
             this.Controls.Add(this.RestartButtom);
             this.Controls.Add(this.HealthText);
             this.Controls.Add(this.StepsText);
@@ -330,8 +364,12 @@ namespace LookAtTheSteps
             this.Text = "LookAtTheSteps";
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button CloseInstructin;
+
+        private System.Windows.Forms.Button ShowInstruction;
         
-        // private System.Windows.Forms.Label Instruction;
+        private System.Windows.Forms.Label Instruction;
 
         private System.Windows.Forms.Label StepsText;
         

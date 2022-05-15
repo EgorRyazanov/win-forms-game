@@ -19,6 +19,7 @@ namespace LookAtTheSteps
         public static int HeightBorder ;
         public bool IsWin;
         public bool IsLose;
+        public bool IsInstructionShow;
 
 
         public Form1()
@@ -40,6 +41,9 @@ namespace LookAtTheSteps
             NextLevel.Hide();
             Win.Hide();
             Lose.Hide();
+            CloseInstructin.Hide();
+            Instruction.Hide();
+            ShowInstruction.Hide();
             WidthBorder = (Screen.PrimaryScreen.Bounds.Width - Map.MapWidth * Map.CellSize)/2;
             HeightBorder = (Screen.PrimaryScreen.Bounds.Height - Map.MapHeigh * Map.CellSize)/2;
         }
@@ -64,7 +68,7 @@ namespace LookAtTheSteps
             DoubleBuffered = true;
             Graphics g = e.Graphics;
             g.FillRectangle(new SolidBrush(Color.LightGray), 0,0, ClientSize.Width, ClientSize.Height);
-            if (IsButtomPressed && !IsLose && !IsWin)
+            if (IsButtomPressed && !IsLose && !IsWin && !IsInstructionShow)
             {
                 Drawing.DrawMap(g,WidthBorder, 
                     HeightBorder, Map.map, Map.MapHeigh, Map.MapWidth);
@@ -355,13 +359,16 @@ namespace LookAtTheSteps
             FirstLevel.Hide();
             ExitButtom.Hide();
             Menu.Show();
-            ShowMoves.Show();
-            Health.Show();
-            Inventory.Show();
-            HealthText.Show();
-            StepsText.Show();
+            // ShowMoves.Show();
+            // Health.Show();
+            // Inventory.Show();
+            // HealthText.Show();
+            // StepsText.Show();
             PlayButtom.Hide();
             RestartButtom.Show();
+            CloseInstructin.Show();
+            Instruction.Show();
+            IsInstructionShow = true;
         }
 
         private void LoadMenu(object sender, EventArgs e)
@@ -384,6 +391,9 @@ namespace LookAtTheSteps
             RestartButtom.Hide();
             Win.Hide();
             NextLevel.Hide();
+            ShowInstruction.Hide();
+            Instruction.Hide();
+            CloseInstructin.Hide();
 
         }
 
@@ -405,6 +415,7 @@ namespace LookAtTheSteps
             Inventory.Show();
             PlayButtom.Hide();
             RestartButtom.Show();
+            ShowInstruction.Show();
         }
 
         private void Exit(object sender, EventArgs e)
@@ -469,6 +480,7 @@ namespace LookAtTheSteps
             Inventory.Show();
             PlayButtom.Hide();
             RestartButtom.Show();
+            ShowInstruction.Show();
         }
 
         private void Restart(object sender, EventArgs e)
@@ -486,8 +498,47 @@ namespace LookAtTheSteps
             Inventory.Show();
             HealthText.Show();
             StepsText.Show();
-
+            Instruction.Hide();
+            ShowInstruction.Show();
+            CloseInstructin.Hide();
+            IsInstructionShow = false;
             Invalidate();
+        }
+        
+        private void ShowInstructionLabel(object sender, EventArgs e)
+        {
+            Instruction.Show();
+            Health.Hide();
+            Inventory.Hide();
+            HealthText.Hide();
+            StepsText.Hide();
+            ShowInstruction.Hide();
+            CloseInstructin.Show();
+            IsInstructionShow = true;
+            Invalidate();
+        }
+        
+        private void CloseInstructionLabel(object sender, EventArgs e)
+        {
+            Instruction.Hide();
+            Health.Show();
+            Inventory.Show();
+            HealthText.Show();
+            StepsText.Show();
+            ShowMoves.Show();
+            ShowInstruction.Show();
+            CloseInstructin.Hide();
+            IsInstructionShow = false;
+            Invalidate();
+            if (IsLose || IsWin)
+            {
+                Health.Hide();
+                Inventory.Hide();
+                HealthText.Hide();
+                StepsText.Hide();
+                ShowMoves.Hide();
+            }
+
         }
     }
 }
