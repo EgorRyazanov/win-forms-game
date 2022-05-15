@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace LookAtTheSteps
 {
@@ -7,18 +6,20 @@ namespace LookAtTheSteps
     {
         public int X;
         public int Y;
+        public int StartX;
+        public int StartY;
+        public int StartHealth;
+        public int StartMoves;
         public int DirX;
         public int DirY;
         public bool IsMoving;
         public Tuple<int, int> Position;
         public bool MadeMove;
-
-        public Image Sprite;
-        public int Size;
+        
 
         public int Health;
         public int Moves;
-        public int InventorySize;
+        public static int InventorySize = 2;
         public MapBlocks[] Inventory;
         public bool IsInventoryPressed;
         public bool IsAlive;
@@ -29,17 +30,19 @@ namespace LookAtTheSteps
         public int PurposeY;
 
 
-        public Player(int x, int y, Image sprite, int inventorySize, int health, int moves) // инвентарь должен быть меньше ширины карты
+        public Player(int x, int y, int health, int moves) // инвентарь должен быть меньше ширины карты
         {
             X = x;
             Y = y;
-            Sprite = sprite;
-            Size = 60;
-            Position = new Tuple<int, int>(0, 0);
-            InventorySize = inventorySize;
+            StartX = X;
+            StartY = Y;
+            Position = new Tuple<int, int>((y - Form1.HeightBorder)/Map.CellSize, (x - Form1.WidthBorder)/Map.CellSize); 
             Inventory = new MapBlocks[InventorySize];
             Health = health;
+            StartHealth = Health;
             Moves = moves;
+            StartMoves = Moves;
+            MadeMove = false;
             IsMoving = false;
             IsInventoryPressed = false;
             IsAlive = true;
@@ -80,8 +83,8 @@ namespace LookAtTheSteps
                 DirY = 5;
             if (Position.Item1 - row > 0)
                 DirY = -5;
-            PurposeX = column * Map.CellSize + 100;
-            PurposeY = row * Map.CellSize + 100;
+            PurposeX = column * Map.CellSize + Form1.WidthBorder;
+            PurposeY = row * Map.CellSize + Form1.HeightBorder;
             Position = new Tuple<int, int>(row, column);
         }
 

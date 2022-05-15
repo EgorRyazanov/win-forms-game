@@ -11,9 +11,15 @@ namespace LookAtTheSteps
         public static Image LavaImage = new Bitmap(Path.Combine(new DirectoryInfo(
             Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\Lava.png"));
         
+        public static Image Wall = new Bitmap(Path.Combine(new DirectoryInfo(
+            Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\Wall.png"));
+        public static Image Knight = new Bitmap(Path.Combine(new DirectoryInfo
+            (Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\knight.png"));
+        public static Image Gun = new Bitmap(Path.Combine(new DirectoryInfo
+            (Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Sprites\\BigGun.png"));
+        
         public static void DrawMap(Graphics g, int PointX, int PointY, MapBlocks[,] map, int mapHeigh, int mapWidth)
         {
-            g.FillRectangle(new SolidBrush(Color.LightGray), 0, 0, 2000, 2000);
             var startY = PointY;
             for (var x = 0; x < mapWidth; x++)
             {
@@ -28,20 +34,23 @@ namespace LookAtTheSteps
 
                     if (map[y, x] == MapBlocks.Wall)
                     {
-                        g.FillRectangle(new SolidBrush(Color.Gray),
-                            PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
+                        g.DrawImage(Wall,  PointX, PointY, 50, 50);
+                        // g.FillRectangle(new SolidBrush(Color.DarkGray),
+                        //     PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
                         g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     } // стена
                     
                     if (map[y, x] == MapBlocks.Stone)
-                    {
+                    { 
+                        g.FillRectangle(new SolidBrush(Color.White),
+                            PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
                         g.DrawImage(StoneImage,  PointX, PointY, 50, 50);
                         g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     } // камень
 
                     if (map[y, x] == MapBlocks.Finish)
                     {
-                        g.FillRectangle(new SolidBrush(Color.Green),
+                        g.FillRectangle(new SolidBrush(Color.LightGreen),
                             PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
                         g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     } // финиш
@@ -49,6 +58,8 @@ namespace LookAtTheSteps
                     if (map[y, x] == MapBlocks.Lava)
                     {
                         g.DrawImage(LavaImage,  PointX, PointY, 50, 50);
+                        // g.FillRectangle(new SolidBrush(Color.Red),
+                        //     PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
                         g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     } // Лава
 
@@ -61,8 +72,9 @@ namespace LookAtTheSteps
 
                     if (map[y, x] == MapBlocks.Crossbow)
                     {
-                        g.FillRectangle(new SolidBrush(Color.Aqua),
+                        g.FillRectangle(new SolidBrush(Color.White),
                             PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
+                        g.DrawImage(Gun,  PointX, PointY, 50, 50);
                         g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     } // Арбалет
                     
@@ -89,6 +101,8 @@ namespace LookAtTheSteps
                 }
                 if (inventory[i] == MapBlocks.Stone)
                 {
+                    g.FillRectangle(new SolidBrush(Color.Pink),
+                        PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);
                     g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     g.DrawImage(StoneImage,  PointX, PointY, 50, 50);
                 };
@@ -98,8 +112,8 @@ namespace LookAtTheSteps
         
         public static void DrawRectangle(int row, int column, Color color, Graphics g)
         {
-            g.DrawRectangle(new Pen(color), 100 + column * Map.CellSize,
-                100 + row * Map.CellSize, Map.CellSize, Map.CellSize);
+            g.DrawRectangle(new Pen(color), Form1.WidthBorder + column * Map.CellSize,
+                Form1.HeightBorder + row * Map.CellSize, Map.CellSize, Map.CellSize);
         }
     }
 }

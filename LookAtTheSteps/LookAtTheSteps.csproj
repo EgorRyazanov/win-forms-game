@@ -54,7 +54,6 @@
         <Compile Include="Form1.Designer.cs">
             <DependentUpon>Form1.cs</DependentUpon>
         </Compile>
-        <Compile Include="Inventory.cs" />
         <Compile Include="Level.cs" />
         <Compile Include="Model\Map.cs" />
         <Compile Include="Player.cs" />
@@ -88,12 +87,11 @@
     <ItemGroup>
       <Content Include=".gitignore.txt" />
       <Content Include="Sprites\fireball.png" />
+      <Content Include="Sprites\BigGun.png" />
       <Content Include="Sprites\knight.png" />
-      <Content Include="Sprites\123.png" />
       <Content Include="Sprites\Lava.png" />
+      <Content Include="Sprites\Wall.png" />
       <Content Include="Sprites\Stone.png" />
-      <Content Include="Sprites\Circle.png" />
-      <Content Include="Sprites\NewArrow.png" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

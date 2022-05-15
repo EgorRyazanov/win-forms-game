@@ -20,8 +20,8 @@ namespace LookAtTheSteps
         public bool isPressed;
         public static Tuple<int, int> pressedPosition;
 
-        public int MapHeigh;
-        public int MapWidth;
+        public static int MapHeigh = 12;
+        public static int MapWidth = 14;
         public MapBlocks[,] map;
         public static int CellSize = 50;
 
@@ -31,18 +31,16 @@ namespace LookAtTheSteps
         public bool HaveCrossbow;
         public static bool ArrowIsMoving; // эта статическая переменная может нарушать работу карты при ее создании
 
-        public Map(int mapHeigh, int mapWidth, MapBlocks[,] mapCopy)
+        public Map(MapBlocks[,] mapCopy)
         {
-            MapHeigh = mapHeigh;
-            MapWidth = mapWidth;
             pressedPosition = new Tuple<int, int>(-1, -1);
             CrossbowsColumn = new Dictionary<int, List<int>>();
             CrossbowsRow = new Dictionary<int, List<int>>();
             ArrowIsMoving = false;
             map = new MapBlocks[MapHeigh, MapWidth];
             isPressed = false;
-            for (var row = 0; row < mapHeigh; row++)
-                for (var column = 0; column < mapHeigh; column++)
+            for (var row = 0; row < MapHeigh; row++)
+                for (var column = 0; column < MapWidth; column++)
                     map[row, column] = mapCopy[row, column];
             GetCrossbows();
         }
@@ -55,13 +53,13 @@ namespace LookAtTheSteps
                 CrossbowsRow[y] = new List<int>();
 
             for (var x = 0; x < MapWidth; x++)
-            for (var y = 0; y < MapHeigh; y++)
-                if (map[y, x] == MapBlocks.Crossbow)
-                {
-                    CrossbowsRow[y].Add(x);
-                    CrossbowsColumn[x].Add(y);
-                    HaveCrossbow = true;
-                }
+                for (var y = 0; y < MapHeigh; y++)
+                    if (map[y, x] == MapBlocks.Crossbow)
+                    {
+                        CrossbowsRow[y].Add(x);
+                        CrossbowsColumn[x].Add(y);
+                        HaveCrossbow = true;
+                    }
         }
         public int GetWidth()
         {
@@ -73,6 +71,15 @@ namespace LookAtTheSteps
             return CellSize * MapHeigh;
         }
 
+        public static MapBlocks[,] CopyMap(MapBlocks[,] map)
+        {
+            var newMap = new MapBlocks[MapHeigh, MapWidth];
+            for (var y = 0; y < MapHeigh; y++)
+                for (var x = 0; x < MapWidth; x++)
+                    newMap[y, x] = map[y, x];
+            return newMap;
+        }
+
         public bool ArrowCanShootRow(int arrowColumn, int playerColumn, int playerRow)
         {
             if (playerColumn > arrowColumn)
@@ -82,7 +89,8 @@ namespace LookAtTheSteps
             for (var x = minColumn; x < maxColumn; x++)
                 if (map[playerRow, x] != MapBlocks.Empty
                     && map[playerRow, x] != MapBlocks.Finish
-                    && map[playerRow, x] != MapBlocks.ForcedLava)
+                    && map[playerRow, x] != MapBlocks.ForcedLava
+                    && map[playerRow, x] != MapBlocks.Lava)
                     return false;
             return true;
         }
@@ -96,7 +104,8 @@ namespace LookAtTheSteps
             for (var y = minRow; y < maxRow; y++)
                 if (map[y, playerColumn] != MapBlocks.Empty
                     && map[y, playerColumn] != MapBlocks.Finish
-                    && map[y, playerColumn] != MapBlocks.ForcedLava)
+                    && map[y, playerColumn] != MapBlocks.ForcedLava
+                    && map[y, playerColumn] != MapBlocks.Lava)
                     return false;
             return true;
         }
@@ -123,16 +132,16 @@ namespace LookAtTheSteps
         public bool MapPressed(int X, int Y, MouseButtons button, bool isMoving)
         {
             return button == MouseButtons.Left &&
-                   X - 100 > 0 && X < 100 + GetWidth() &&
-                   Y - 100 > 0 && Y < 100 + GetHeigh()
+                   X - Form1.WidthBorder > 0 && X < Form1.WidthBorder + GetWidth() &&
+                   Y - Form1.HeightBorder > 0 && Y < Form1.HeightBorder + GetHeigh()
                    && !isMoving;
         }
 
 
         public void PlaceThingOnMap(int X, int Y, Player player) //переношу Player - возможна потеря 
         {
-            var column = (X - 100) / CellSize;
-            var row = (Y - 100) / CellSize;
+            var column = (X - Form1.WidthBorder) / CellSize;
+            var row = (Y - Form1.HeightBorder) / CellSize;
             if (Math.Abs(player.Position.Item1 - row) +
                 Math.Abs(player.Position.Item2 - column) == 1
                 && map[row, column] == MapBlocks.Empty
@@ -154,7 +163,7 @@ namespace LookAtTheSteps
             if (pressedPosition.Item1 == row &&
                 pressedPosition.Item2 == column)
             {
-                for (var i = 0; i < player.InventorySize; i++)
+                for (var i = 0; i < Player.InventorySize; i++)
                     if (player.Inventory[i] == MapBlocks.Empty)
                     {
                         player.Inventory[i] = map[row, column];

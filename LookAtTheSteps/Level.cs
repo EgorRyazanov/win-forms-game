@@ -1,14 +1,207 @@
-﻿namespace LookAtTheSteps
-{
-    public class Level
-    {
-        public Map Map;
-        public Player Player;
+﻿using System;
+using System.Collections.Generic;
 
-        public Level(Map map, Player player)
-        {
-            Map = map;
-            Player = player;
-        }
+namespace LookAtTheSteps
+{
+    public static class Level
+    {
+
+        private static Tuple<Map, Player> FirstLevel  = new Tuple<Map, Player>(
+            new Map(new[,]
+            {
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, 
+                    MapBlocks.Crossbow, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Crossbow,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Finish, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },}), new Player(Form1.WidthBorder + Map.CellSize * 7, Form1.HeightBorder + (Map.MapHeigh - 1) * Map.CellSize,  4, 14));
+
+        private static Tuple<Map, Player> SecondLevel = new Tuple<Map, Player>(
+            new Map(new[,]
+            {
+                {
+                    MapBlocks.Finish, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Lava
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Empty,
+                    MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Stone,
+                    MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Lava
+                },
+                {
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Empty,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Stone,
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Stone,
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Lava,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Stone,
+                    MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Stone
+                },
+            }), new Player(Form1.WidthBorder + Map.CellSize * 7, Form1.HeightBorder + (Map.MapHeigh - 1) * Map.CellSize, 1, 17));
+        
+        private static Tuple<Map, Player> ThirdLevel = new Tuple<Map, Player>(
+            new Map(new[,]
+            {
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Crossbow, MapBlocks.Wall, MapBlocks.Crossbow, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall,
+                    MapBlocks.Crossbow, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Crossbow, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Wall,
+                    MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Lava, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Lava,
+                    MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Empty,
+                    MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty
+                },
+                {
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Finish
+                },
+                {
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
+                },
+            }), new Player(Form1.WidthBorder, Form1.HeightBorder + Map.CellSize * 5, 11, 22));
+        
+        
+        public static List<Tuple<Map, Player>> Levels = new List<Tuple<Map, Player>>( ){FirstLevel, SecondLevel, ThirdLevel};
+        
     }
 }
