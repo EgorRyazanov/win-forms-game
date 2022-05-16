@@ -488,6 +488,8 @@ namespace LookAtTheSteps
 
         private void Restart(object sender, EventArgs e)
         {
+            if (IsRotated)
+                Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
             NextLevel.Hide();
             Win.Hide();
             Lose.Hide();
