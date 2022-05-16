@@ -141,7 +141,7 @@ namespace LookAtTheSteps
             {
                 {
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
-                    MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
                     MapBlocks.Gun, MapBlocks.Wall, MapBlocks.Gun, MapBlocks.Wall
                 },
                 {
@@ -172,11 +172,11 @@ namespace LookAtTheSteps
                 {
                     MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
                     MapBlocks.Wall, MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
-                    MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
+                    MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
                 },
                 {
                     MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Stone, MapBlocks.Wall,
-                    MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Lava, MapBlocks.Empty,
+                    MapBlocks.Stone, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Lava, MapBlocks.Lava,
                     MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Empty
                 },
                 {

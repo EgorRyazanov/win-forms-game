@@ -45,8 +45,8 @@ namespace LookAtTheSteps
             CloseInstructin.Hide();
             Instruction.Hide();
             ShowInstruction.Hide();
-            WidthBorder = (Screen.PrimaryScreen.Bounds.Width - Map.MapWidth * Map.CellSize)/2;
-            HeightBorder = (Screen.PrimaryScreen.Bounds.Height - Map.MapHeigh * Map.CellSize)/2;
+            WidthBorder = (Screen.PrimaryScreen.WorkingArea.Size.Width - Map.MapWidth * Map.CellSize)/2;
+            HeightBorder = (Screen.PrimaryScreen.WorkingArea.Size.Height - Map.MapHeigh * Map.CellSize)/2;
         }
 
         public void Init()

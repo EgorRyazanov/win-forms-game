@@ -69,7 +69,7 @@ namespace LookAtTheSteps
             Instruction.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular);
             Instruction.Location = new System.Drawing.Point(170, 50);
             Instruction.Name = "Instruction";
-            Instruction.Size = new System.Drawing.Size(1700, 900);
+            Instruction.Size = new System.Drawing.Size(Screen.PrimaryScreen.WorkingArea.Size.Width + 180, Screen.PrimaryScreen.WorkingArea.Size.Height);
             Instruction.TabIndex = 0;
             Instruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             
@@ -89,8 +89,8 @@ namespace LookAtTheSteps
             ZeroLevel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             ZeroLevel.BackColor = System.Drawing.Color.Transparent;
             ZeroLevel.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            ZeroLevel.Location = new System.Drawing.Point(Screen.PrimaryScreen.Bounds.Width / 2 + 75, 
-                Screen.PrimaryScreen.Bounds.Height / 2 - 200);
+            ZeroLevel.Location = new System.Drawing.Point(Screen.PrimaryScreen.WorkingArea.Size.Width / 2 + 75, 
+                Screen.PrimaryScreen.WorkingArea.Size.Height / 2 - 200);
             ZeroLevel.Name = "ZeroLevel";
             ZeroLevel.Size = new System.Drawing.Size(350, 75);
             ZeroLevel.TabIndex = 1;
