@@ -10,16 +10,17 @@ namespace LookAtTheSteps
     {
         public Player Player;
         public Timer Timer;
-        public Gun Arrow;
-        public List<Gun> Arrows;
+        public Gun Gun;
+        public List<Gun> Guns;
         public Map Map;
-        public bool IsButtomPressed;
+        public bool IsButtonPressed;
         public int IndexLevel;
         public static int WidthBorder;
         public static int HeightBorder ;
         public bool IsWin;
         public bool IsLose;
         public bool IsInstructionShow;
+        public static bool IsRotated;
 
 
         public Form1()
@@ -36,7 +37,7 @@ namespace LookAtTheSteps
             FirstLevel.Hide();
             Inventory.Hide();
             ShowMoves.Hide();
-            Menu.Hide();
+            GameMenu.Hide();
             Health.Hide();
             NextLevel.Hide();
             Win.Hide();
@@ -53,12 +54,13 @@ namespace LookAtTheSteps
             Map = new Map(Map.CopyMap(Level.Levels[IndexLevel].Item1.map));
             Player = new Player (Level.Levels[IndexLevel].Item2.StartX, Level.Levels[IndexLevel].Item2.StartY,  
                 Level.Levels[IndexLevel].Item2.StartHealth, Level.Levels[IndexLevel].Item2.StartMoves, WidthBorder, HeightBorder);
+            IsRotated = false;
             Timer = new Timer();
             Timer.Interval = 5;
             Timer.Tick += Update;
             MouseClick += MoveOnMouse;
             Player.Init();
-            Arrows = new List<Gun>();
+            Guns = new List<Gun>();
             Timer.Start();
             Invalidate();
         }
@@ -68,15 +70,15 @@ namespace LookAtTheSteps
             DoubleBuffered = true;
             Graphics g = e.Graphics;
             g.FillRectangle(new SolidBrush(Color.LightGray), 0,0, ClientSize.Width, ClientSize.Height);
-            if (IsButtomPressed && !IsLose && !IsWin && !IsInstructionShow)
+            if (IsButtonPressed && !IsLose && !IsWin && !IsInstructionShow)
             {
                 Drawing.DrawMap(g,WidthBorder, 
                     HeightBorder, Map.map, Map.MapHeigh, Map.MapWidth);
                 g.DrawImage(Drawing.Knight, Player.X, Player.Y, 50, 50);
                 Drawing.DrawInventory(g, WidthBorder, HeightBorder, Player.InventorySize, Player.Inventory, Map.MapWidth, Map.MapHeigh);
-                if (Map.ArrowIsMoving)
-                    foreach (var arrow in Arrows)
-                        g.DrawImage(arrow.Image,  arrow.X, arrow.Y, 50, 50);
+                if (Map.IsProejectileFlying)
+                    foreach (var gun in Guns)
+                        g.DrawImage(gun.Image,  gun.X, gun.Y, 50, 50);
 
             }
         }
@@ -134,46 +136,46 @@ namespace LookAtTheSteps
                 MouseClick -= MoveOnMouse;
             }
 
-            if (Map.ArrowIsMoving)
+            if (Map.IsProejectileFlying)
             {
-                for (var i = 0; i < Arrows.Count; i++)
+                for (var i = 0; i < Guns.Count; i++)
                 {
-                    if (Arrows[i].X == Arrows[i].PurposeX &&
-                        Arrows[i].Y == Arrows[i].PurposeY )
+                    if (Guns[i].X == Guns[i].PurposeX &&
+                        Guns[i].Y == Guns[i].PurposeY )
                     {
-                        Arrows[i].DirX = 0;
-                        Arrows[i].DirY = 0;
+                        Guns[i].DirX = 0;
+                        Guns[i].DirY = 0;
                         if (Player.Health > 0)
                             Player.Health -= 1;
-                        Arrows.Remove(Arrows[i]);
+                        Guns.Remove(Guns[i]);
                         Invalidate();
                         continue;
 
                     }
-                    Arrows[i].Move();
+                    Guns[i].Move();
                     Invalidate();
                 }
-                if (Arrows.Count == 0)
-                    Map.ArrowIsMoving = false;
+                if (Guns.Count == 0)
+                    Map.IsProejectileFlying = false;
             }
-            if (Player.MadeMove && Map.HaveCrossbow)
+            if (Player.MadeMove && Map.HaveGuns)
             {
                 var index = 0;
-                if (Map.CrossbowsRow[Player.Position.Item1].Count > 0)
+                if (Map.GunsRow[Player.Position.Item1].Count > 0)
                 {
-                    foreach (var i in Map.CrossbowsRow[Player.Position.Item1])
+                    foreach (var i in Map.GunsRow[Player.Position.Item1])
                         if (Map.ArrowCanShootRow(i, Player.Position.Item2, Player.Position.Item1))
                         {
                             if (Math.Abs(i - Player.Position.Item2) != 1)
                             {
                                 if (i > Player.Position.Item2)
-                                    Arrow = new Gun(i * Map.CellSize + WidthBorder - 25,
+                                    Gun = new Gun(i * Map.CellSize + WidthBorder - 25,
                                         Player.Position.Item1 * Map.CellSize + HeightBorder);
 
                                 else
-                                    Arrow = new Gun((i + 1) * Map.CellSize + WidthBorder,
+                                    Gun = new Gun((i + 1) * Map.CellSize + WidthBorder,
                                         Player.Position.Item1 * Map.CellSize + HeightBorder);
-                                Arrows.Add(Arrow);
+                                Guns.Add(Gun);
                                 ChangeArrowVelocity(Player.Position.Item1, i, index);
                                 index++;
                                 Invalidate();
@@ -186,18 +188,18 @@ namespace LookAtTheSteps
                         }
                 }
                            
-                if (Map.CrossbowsColumn[Player.Position.Item2].Count > 0)
+                if (Map.GunsColumn[Player.Position.Item2].Count > 0)
                 {
-                    foreach (var i in Map.CrossbowsColumn[Player.Position.Item2])
+                    foreach (var i in Map.GunsColumn[Player.Position.Item2])
                         if (Map.ArrowCanShootColumn(i, Player.Position.Item1, Player.Position.Item2))
                         {
                             if (Math.Abs(i - Player.Position.Item1) != 1) 
                             {
                                 if (i > Player.Position.Item1)        
-                                    Arrow = new Gun(Player.Position.Item2 * Map.CellSize + WidthBorder, i * Map.CellSize + HeightBorder - 25);
+                                    Gun = new Gun(Player.Position.Item2 * Map.CellSize + WidthBorder, i * Map.CellSize + HeightBorder - 25);
                                 else 
-                                    Arrow = new Gun(Player.Position.Item2 * Map.CellSize + WidthBorder, (i + 1) * Map.CellSize + HeightBorder);
-                                Arrows.Add(Arrow);
+                                    Gun = new Gun(Player.Position.Item2 * Map.CellSize + WidthBorder, (i + 1) * Map.CellSize + HeightBorder);
+                                Guns.Add(Gun);
                                 ChangeArrowVelocity( i, Player.Position.Item2, index);
                                 Invalidate();
                             }
@@ -224,36 +226,36 @@ namespace LookAtTheSteps
         
         public void ChangeArrowVelocity(int row, int column, int index)
         {
-            Map.ArrowIsMoving = true;
+            Map.IsProejectileFlying = true;
             if (Player.Position.Item2 - column < 0)
             {
-                Arrows[index].DirX = -5;
-                Arrows[index].PurposeX = (Player.Position.Item2 + 1) * Map.CellSize + WidthBorder - 25;
-                Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder;
+                Guns[index].DirX = -5;
+                Guns[index].PurposeX = (Player.Position.Item2 + 1) * Map.CellSize + WidthBorder - 25;
+                Guns[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder;
             }
 
             if (Player.Position.Item2 - column > 0)
             {
-                Arrows[index].DirX = 5;
-                Arrows[index].PurposeX = Player.Position.Item2 * Map.CellSize + WidthBorder - 25;
-                Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder;
-                Arrows[index].Image.RotateFlip(RotateFlipType.Rotate180FlipY);
+                Guns[index].DirX = 5;
+                Guns[index].PurposeX = Player.Position.Item2 * Map.CellSize + WidthBorder - 25;
+                Guns[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder;
+                Guns[index].Image.RotateFlip(RotateFlipType.Rotate180FlipY);
             }
             
             if (Player.Position.Item1 - row < 0)
             {
-                Arrows[index].DirY = -5;
-                Arrows[index].PurposeX = Player.Position.Item2 * Map.CellSize + WidthBorder;
-                Arrows[index].PurposeY = (Player.Position.Item1 + 1) * Map.CellSize + HeightBorder - 25;
-                Arrows[index].Image.RotateFlip(RotateFlipType.Rotate270FlipY);
+                Guns[index].DirY = -5;
+                Guns[index].PurposeX = Player.Position.Item2 * Map.CellSize + WidthBorder;
+                Guns[index].PurposeY = (Player.Position.Item1 + 1) * Map.CellSize + HeightBorder - 25;
+                Guns[index].Image.RotateFlip(RotateFlipType.Rotate270FlipY);
             }
             
             if (Player.Position.Item1 - row > 0)
             {
-                Arrows[index].DirY = 5;
-                Arrows[index].PurposeX = Player.Position.Item2  * Map.CellSize + WidthBorder;
-                Arrows[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder - 25;
-                Arrows[index].Image.RotateFlip(RotateFlipType.Rotate90FlipY);
+                Guns[index].DirY = 5;
+                Guns[index].PurposeX = Player.Position.Item2  * Map.CellSize + WidthBorder;
+                Guns[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder - 25;
+                Guns[index].Image.RotateFlip(RotateFlipType.Rotate90FlipY);
             }
         }
 
@@ -270,8 +272,8 @@ namespace LookAtTheSteps
         {
             if (Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving) && !Player.IsInventoryPressed 
                                                                     && Player.IsHaveSteps 
-                                                                    && !Map.ArrowIsMoving
-                                                                    && Player.IsAlive) // пофиксить момент, когда ты можешь скрыться от стрелы 
+                                                                    && !Map.IsProejectileFlying
+                                                                    && Player.IsAlive) 
             {
                 var column = (e.X - WidthBorder)/ Map.CellSize;
                 var row = (e.Y - HeightBorder)/ Map.CellSize;
@@ -332,7 +334,7 @@ namespace LookAtTheSteps
             if (Player.IsInventoryPressed && Player.IsHaveSteps && Player.IsAlive) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход
                 Player.IsInventoryPressed = false;
 
-            if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.IsPressed && !Map.ArrowIsMoving &&
+            if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.IsPressed && !Map.IsProejectileFlying &&
                 Player.IsHaveSteps && Player.IsAlive)
             {
                 if (Player.PressedInventoryPosition != -1)
@@ -349,12 +351,12 @@ namespace LookAtTheSteps
             Back.Hide();
             IndexLevel = 0;
             Init();
-            IsButtomPressed = true;
+            IsButtonPressed = true;
             SecondLevel.Hide();
             ZeroLevel.Hide();
             FirstLevel.Hide();
             ExitButtom.Hide();
-            Menu.Show();
+            GameMenu.Show();
             PlayButtom.Hide();
             RestartButtom.Show();
             CloseInstructin.Show();
@@ -366,11 +368,11 @@ namespace LookAtTheSteps
         {
             IsLose = false;
             IsWin = false;
-            IsButtomPressed = false;
+            IsButtonPressed = false;
             PlayButtom.Show();
             Lose.Hide();
             ExitButtom.Show();
-            Menu.Hide();
+            GameMenu.Hide();
             ShowMoves.Hide();
             Inventory.Hide();
             HealthText.Hide();
@@ -385,6 +387,7 @@ namespace LookAtTheSteps
             ShowInstruction.Hide();
             Instruction.Hide();
             CloseInstructin.Hide();
+            IsInstructionShow = false;
 
         }
 
@@ -393,12 +396,12 @@ namespace LookAtTheSteps
             Back.Hide();
             IndexLevel = 1;
             Init();
-            IsButtomPressed = true;
+            IsButtonPressed = true;
             SecondLevel.Hide();
             ZeroLevel.Hide();
             FirstLevel.Hide();
             ExitButtom.Hide();
-            Menu.Show();
+            GameMenu.Show();
             ShowMoves.Show();
             Health.Show();
             HealthText.Show();
@@ -419,18 +422,20 @@ namespace LookAtTheSteps
             IsLose = false;
             IsWin = false;
             IndexLevel += 1;
+            if (IsRotated)
+                Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
             Init();
             Timer.Tick -= Update;
             MouseClick -= MoveOnMouse;
-            IsButtomPressed = true;
+            IsButtonPressed = true;
             NextLevel.Hide();
             Win.Hide();
-            Init();
             ShowMoves.Show();
             Health.Show();
             HealthText.Show();
             StepsText.Show();
             Inventory.Show();
+            Invalidate();
         }
 
         private void ShowLevels(object sender, EventArgs e)
@@ -458,12 +463,12 @@ namespace LookAtTheSteps
             Back.Hide();
             IndexLevel = 2;
             Init();
-            IsButtomPressed = true; 
+            IsButtonPressed = true; 
             ZeroLevel.Hide();
             FirstLevel.Hide();
             SecondLevel.Hide();
             ExitButtom.Hide();
-            Menu.Show();
+            GameMenu.Show();
             ShowMoves.Show();
             Health.Show();
             HealthText.Show();
@@ -483,6 +488,8 @@ namespace LookAtTheSteps
             IsWin = false;
             Timer.Tick -= Update;
             MouseClick -= MoveOnMouse;
+            if (IsRotated)
+                Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
             Init();
             ShowMoves.Show();
             Health.Show();

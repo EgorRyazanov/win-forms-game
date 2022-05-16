@@ -70,7 +70,7 @@ namespace LookAtTheSteps
                         g.DrawRectangle(new Pen(Color.Black), PointX, PointY, Map.CellSize, Map.CellSize);
                     } // Заставленная лава
 
-                    if (map[y, x] == MapBlocks.Crossbow)
+                    if (map[y, x] == MapBlocks.Gun)
                     {
                         g.FillRectangle(new SolidBrush(Color.White),
                             PointX + 1, PointY + 1, Map.CellSize - 2, Map.CellSize - 2);

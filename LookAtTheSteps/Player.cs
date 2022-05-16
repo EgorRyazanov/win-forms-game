@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace LookAtTheSteps
 {
@@ -30,7 +32,7 @@ namespace LookAtTheSteps
         public int PurposeY;
 
 
-        public Player(int x, int y, int health, int moves, int widthBorder, int heightBorder) // инвентарь должен быть меньше ширины карты
+        public Player(int x, int y, int health, int moves, int widthBorder, int heightBorder)
         {
             X = x;
             Y = y;
@@ -76,9 +78,24 @@ namespace LookAtTheSteps
         {
             IsMoving = true;
             if (Position.Item2 - column < 0)
+            {
+                if (Form1.IsRotated)
+                {
+                    Form1.IsRotated = false;
+                    Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
+                }
                 DirX = 5;
+            }
+
             if (Position.Item2 - column > 0)
+            {
+                if (!Form1.IsRotated)
+                {
+                    Form1.IsRotated = true;
+                    Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
+                }
                 DirX = -5;
+            }
             if (Position.Item1 - row < 0)
                 DirY = 5;
             if (Position.Item1 - row > 0)

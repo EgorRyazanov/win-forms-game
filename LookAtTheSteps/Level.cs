@@ -11,11 +11,11 @@ namespace LookAtTheSteps
             {
                 {
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, 
-                    MapBlocks.Crossbow, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Gun, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall
                 },
                 {
-                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Crossbow,
+                    MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Gun,
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
                     MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Finish, MapBlocks.Wall
                 },
@@ -142,7 +142,7 @@ namespace LookAtTheSteps
                 {
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
                     MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
-                    MapBlocks.Crossbow, MapBlocks.Wall, MapBlocks.Crossbow, MapBlocks.Wall
+                    MapBlocks.Gun, MapBlocks.Wall, MapBlocks.Gun, MapBlocks.Wall
                 },
                 {
                     MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
@@ -151,12 +151,12 @@ namespace LookAtTheSteps
                 },
                 {
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Stone, MapBlocks.Wall,
-                    MapBlocks.Crossbow, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
+                    MapBlocks.Gun, MapBlocks.Lava, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty,
                     MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Empty, MapBlocks.Wall
                 },
                 {
                     MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall, MapBlocks.Wall,
-                    MapBlocks.Wall, MapBlocks.Crossbow, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
+                    MapBlocks.Wall, MapBlocks.Gun, MapBlocks.Wall, MapBlocks.Wall, MapBlocks.Wall,
                     MapBlocks.Lava, MapBlocks.Wall, MapBlocks.Empty, MapBlocks.Wall
                 },
                 {

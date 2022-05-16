@@ -153,8 +153,8 @@ namespace Tests
                 Level.Levels[0].Item2.StartHealth, Level.Levels[0].Item2.StartMoves, WidthBorder, HeightBorder);
             Map.IsPressed = true;
             Map.PressedPosition = new Tuple<int, int>(10, 7);
-            Map.map[8, 7] = MapBlocks.Crossbow;
-            Map.GetCrossbows();
+            Map.map[8, 7] = MapBlocks.Gun;
+            Map.GetGuns();
             MoveOnMouse(990, 750, MouseClicks.Left);
             DamagePlayer();
             Assert.AreEqual(Level.Levels[0].Item2.StartHealth - 1, Player.Health);
@@ -245,8 +245,8 @@ namespace Tests
                 1, Level.Levels[0].Item2.StartMoves, WidthBorder, HeightBorder);
             Map.IsPressed = true;
             Map.PressedPosition = new Tuple<int, int>(10, 7);
-            Map.map[8, 7] = MapBlocks.Crossbow;
-            Map.GetCrossbows();
+            Map.map[8, 7] = MapBlocks.Gun;
+            Map.GetGuns();
             MoveOnMouse(990, 750, MouseClicks.Left);
             DamagePlayer();
             Assert.AreEqual(true, IsLose);
@@ -346,7 +346,7 @@ namespace Tests
             if (Player.IsInventoryPressed && Player.IsHaveSteps && Player.IsAlive) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход
                 Player.IsInventoryPressed = false;
 
-            if (PlayerInventoryPressed(x, y, button) && !Map.IsPressed && !Map.ArrowIsMoving &&
+            if (PlayerInventoryPressed(x, y, button) && !Map.IsPressed && !Map.IsProejectileFlying &&
                 Player.IsHaveSteps && Player.IsAlive)
             {
                 ClickOnInventory(x);
@@ -355,11 +355,11 @@ namespace Tests
 
         public void DamagePlayer()
         {
-            if (Player.MadeMove && Map.HaveCrossbow)
+            if (Player.MadeMove && Map.HaveGuns)
             { 
-                if (Map.CrossbowsRow[Player.Position.Item1].Count > 0)
+                if (Map.GunsRow[Player.Position.Item1].Count > 0)
                 {
-                    foreach (var i in Map.CrossbowsRow[Player.Position.Item1])
+                    foreach (var i in Map.GunsRow[Player.Position.Item1])
                         if (Map.ArrowCanShootRow(i, Player.Position.Item2, Player.Position.Item1))
                         {
                             if (Player.Health > 0)
@@ -367,9 +367,9 @@ namespace Tests
                         }
                 }
                            
-                if (Map.CrossbowsColumn[Player.Position.Item2].Count > 0)
+                if (Map.GunsColumn[Player.Position.Item2].Count > 0)
                 {
-                    foreach (var i in Map.CrossbowsColumn[Player.Position.Item2])
+                    foreach (var i in Map.GunsColumn[Player.Position.Item2])
                         if (Map.ArrowCanShootColumn(i, Player.Position.Item1, Player.Position.Item2))
                         {
                             if (Player.Health > 0)

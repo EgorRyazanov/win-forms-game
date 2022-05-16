@@ -12,7 +12,7 @@ namespace LookAtTheSteps
         Finish,
         Lava,
         ForcedLava,
-        Crossbow,
+        Gun,
     }
 
     public class Map
@@ -20,45 +20,45 @@ namespace LookAtTheSteps
         public bool IsPressed;
         public static Tuple<int, int> PressedPosition;
 
-        public static int MapHeigh = 12;
-        public static int MapWidth = 14;
+        public static readonly int MapHeigh = 12;
+        public static readonly int MapWidth = 14;
         public MapBlocks[,] map;
         public static int CellSize = 50;
 
 
-        public Dictionary<int, List<int>> CrossbowsColumn;
-        public Dictionary<int, List<int>> CrossbowsRow;
-        public bool HaveCrossbow;
-        public static bool ArrowIsMoving; // эта статическая переменная может нарушать работу карты при ее создании
+        public Dictionary<int, List<int>> GunsColumn;
+        public Dictionary<int, List<int>> GunsRow;
+        public bool HaveGuns;
+        public static bool IsProejectileFlying;
 
         public Map(MapBlocks[,] mapCopy)
         {
             PressedPosition = new Tuple<int, int>(-1, -1);
-            CrossbowsColumn = new Dictionary<int, List<int>>();
-            CrossbowsRow = new Dictionary<int, List<int>>();
-            ArrowIsMoving = false;
+            GunsColumn = new Dictionary<int, List<int>>();
+            GunsRow = new Dictionary<int, List<int>>();
+            IsProejectileFlying = false;
             map = new MapBlocks[MapHeigh, MapWidth];
             IsPressed = false;
             for (var row = 0; row < MapHeigh; row++)
                 for (var column = 0; column < MapWidth; column++)
                     map[row, column] = mapCopy[row, column];
-            GetCrossbows();
+            GetGuns();
         }
         
-        public void GetCrossbows()
+        public void GetGuns()
         {
             for (var x = 0; x < MapWidth; x++)
-                CrossbowsColumn[x] = new List<int>();
+                GunsColumn[x] = new List<int>();
             for (var y = 0; y < MapWidth; y++)
-                CrossbowsRow[y] = new List<int>();
+                GunsRow[y] = new List<int>();
 
             for (var x = 0; x < MapWidth; x++)
                 for (var y = 0; y < MapHeigh; y++)
-                    if (map[y, x] == MapBlocks.Crossbow)
+                    if (map[y, x] == MapBlocks.Gun)
                     {
-                        CrossbowsRow[y].Add(x);
-                        CrossbowsColumn[x].Add(y);
-                        HaveCrossbow = true;
+                        GunsRow[y].Add(x);
+                        GunsColumn[x].Add(y);
+                        HaveGuns = true;
                     }
         }
         public int GetWidth()
@@ -138,7 +138,7 @@ namespace LookAtTheSteps
         }
 
 
-        public void PlaceThingOnMap(int x, int y, Player player, int widthBorder, int heightBorder) //переношу Player - возможна потеря 
+        public void PlaceThingOnMap(int x, int y, Player player, int widthBorder, int heightBorder)  
         {
             var column = (x - widthBorder) / CellSize;
             var row = (y - heightBorder) / CellSize;
@@ -159,7 +159,7 @@ namespace LookAtTheSteps
             }
         }
 
-        public  void TakeThingInInventory(int row, int column, Player player) // та же проблема
+        public  void TakeThingInInventory(int row, int column, Player player) 
         {
             if (PressedPosition.Item1 == row &&
                 PressedPosition.Item2 == column)

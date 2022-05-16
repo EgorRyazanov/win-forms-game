@@ -7,7 +7,7 @@
     &lt;TestId&gt;NUnit3x::AD0E4B6D-5377-4A0F-A24C-CFDE20769E62::.NETFramework,Version=v4.8::Tests.Tests.MoveOnLava&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=26ee0d9e_002D42d8_002D4991_002Dadd4_002D309c2ac48aea/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=26ee0d9e_002D42d8_002D4991_002Dadd4_002D309c2ac48aea/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::AD0E4B6D-5377-4A0F-A24C-CFDE20769E62::.NETFramework,Version=v4.8::Tests.Tests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
@@ -17,7 +17,7 @@
     &lt;TestId&gt;NUnit3x::AD0E4B6D-5377-4A0F-A24C-CFDE20769E62::.NETFramework,Version=v4.8::Tests.Tests.Test1&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b6bc8a8d_002De999_002D4a33_002Da397_002Dfe33e99dc224/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PlayerTakeDamage" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b6bc8a8d_002De999_002D4a33_002Da397_002Dfe33e99dc224/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PlayerTakeDamage" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;ProjectFile&gt;AD0E4B6D-5377-4A0F-A24C-CFDE20769E62/f:Tests.cs&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c3b5e582_002De15e_002D42e3_002D9337_002Da8a6f8b4adc0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MoveDiagonally" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
