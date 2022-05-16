@@ -348,6 +348,8 @@ namespace LookAtTheSteps
 
         private void LoadZeroLevel(object sender, EventArgs e)
         {
+            if (IsRotated)
+                Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
             Back.Hide();
             IndexLevel = 0;
             Init();
@@ -393,6 +395,8 @@ namespace LookAtTheSteps
 
         private void LoadFirstLevel(object sender, EventArgs e)
         {
+            if (IsRotated)
+                Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
             Back.Hide();
             IndexLevel = 1;
             Init();
@@ -430,6 +434,7 @@ namespace LookAtTheSteps
             IsButtonPressed = true;
             NextLevel.Hide();
             Win.Hide();
+            Init();
             ShowMoves.Show();
             Health.Show();
             HealthText.Show();
@@ -460,6 +465,8 @@ namespace LookAtTheSteps
 
         private void LoadSecondLevel(object sender, EventArgs e)
         {
+            if (IsRotated)
+                Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
             Back.Hide();
             IndexLevel = 2;
             Init();
@@ -488,8 +495,6 @@ namespace LookAtTheSteps
             IsWin = false;
             Timer.Tick -= Update;
             MouseClick -= MoveOnMouse;
-            if (IsRotated)
-                Drawing.Knight.RotateFlip(RotateFlipType.Rotate180FlipY);
             Init();
             ShowMoves.Show();
             Health.Show();
