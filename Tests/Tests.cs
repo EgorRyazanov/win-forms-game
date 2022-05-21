@@ -21,10 +21,6 @@ namespace Tests
         private bool IsLose;
         
         
-        //Замечание: решил переписать некоторые методы из Form1
-        //Причина: В них много лишнего, например, автоматическая прорисовка,
-        //которая не может быть убрана. Поэтому они не годятся для тестов
-        
         [Test]
         public void MoveHorizontallyWithoutObstacles()
         {

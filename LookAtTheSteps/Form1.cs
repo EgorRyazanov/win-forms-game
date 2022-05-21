@@ -8,18 +8,17 @@ namespace LookAtTheSteps
     
     public partial class Form1 : Form
     {
-        public Player Player;
-        public Timer Timer;
-        public Gun Gun;
-        public List<Gun> Guns;
-        public Map Map;
-        public bool IsButtonPressed;
-        public int IndexLevel;
+        private Player Player;
+        private Timer Timer;
+        public static List<Gun> Guns;
+        private Map Map;
+        private bool IsButtonPressed;
+        private int IndexLevel;
         public static int WidthBorder;
         public static int HeightBorder ;
-        public bool IsWin;
-        public bool IsLose;
-        public bool IsInstructionShow;
+        private bool IsWin;
+        private bool IsLose;
+        private bool IsInstructionShow;
         public static bool IsRotated;
 
 
@@ -49,7 +48,7 @@ namespace LookAtTheSteps
             HeightBorder = (Screen.PrimaryScreen.WorkingArea.Size.Height - Map.MapHeigh * Map.CellSize)/2;
         }
 
-        public void Init()
+        private void Init()
         {
             Map = new Map(Map.CopyMap(Level.Levels[IndexLevel].Item1.map));
             Player = new Player (Level.Levels[IndexLevel].Item2.StartX, Level.Levels[IndexLevel].Item2.StartY,  
@@ -83,7 +82,7 @@ namespace LookAtTheSteps
             }
         }
         
-        public void Update(object sender, EventArgs e)
+        private void Update(object sender, EventArgs e)
         {
             ShowMoves.Text = Player.Moves.ToString();
             Health.Text = Player.Health.ToString();
@@ -150,7 +149,6 @@ namespace LookAtTheSteps
                         Guns.Remove(Guns[i]);
                         Invalidate();
                         continue;
-
                     }
                     Guns[i].Move();
                     Invalidate();
@@ -164,111 +162,25 @@ namespace LookAtTheSteps
                 if (Map.GunsRow[Player.Position.Item1].Count > 0)
                 {
                     foreach (var i in Map.GunsRow[Player.Position.Item1])
-                        if (Map.ArrowCanShootRow(i, Player.Position.Item2, Player.Position.Item1))
-                        {
-                            if (Math.Abs(i - Player.Position.Item2) != 1)
-                            {
-                                if (i > Player.Position.Item2)
-                                    Gun = new Gun(i * Map.CellSize + WidthBorder - 25,
-                                        Player.Position.Item1 * Map.CellSize + HeightBorder);
-
-                                else
-                                    Gun = new Gun((i + 1) * Map.CellSize + WidthBorder,
-                                        Player.Position.Item1 * Map.CellSize + HeightBorder);
-                                Guns.Add(Gun);
-                                ChangeArrowVelocity(Player.Position.Item1, i, index);
-                                index++;
-                                Invalidate();
-                            }
-                            else
-                            {
-                                if (Player.Health > 0)
-                                    Player.Health -= 1;
-                            }
-                        }
+                    {
+                        index = Shooting.RowGunsShoot(Player, Map, i, index);
+                        Invalidate();
+                    }
                 }
                            
                 if (Map.GunsColumn[Player.Position.Item2].Count > 0)
                 {
                     foreach (var i in Map.GunsColumn[Player.Position.Item2])
-                        if (Map.ArrowCanShootColumn(i, Player.Position.Item1, Player.Position.Item2))
-                        {
-                            if (Math.Abs(i - Player.Position.Item1) != 1) 
-                            {
-                                if (i > Player.Position.Item1)        
-                                    Gun = new Gun(Player.Position.Item2 * Map.CellSize + WidthBorder, i * Map.CellSize + HeightBorder - 25);
-                                else 
-                                    Gun = new Gun(Player.Position.Item2 * Map.CellSize + WidthBorder, (i + 1) * Map.CellSize + HeightBorder);
-                                Guns.Add(Gun);
-                                ChangeArrowVelocity( i, Player.Position.Item2, index);
-                                Invalidate();
-                            }
-                            else
-                            {
-                                if (Player.Health > 0)
-                                    Player.Health -= 1;
-                            }
-                        }
+                    {
+                        Shooting.ColumnGunsShoot(Player, Map, i, index);
+                        Invalidate();
+                    }
                 }
                 Player.MadeMove = false;
             }
         }
 
-        public bool PlayerInventoryPressed(int x, int y, MouseButtons button)
-        {
-            return button == MouseButtons.Left &&
-                   x - WidthBorder - Map.CellSize * (Map.MapWidth / 2 - 1) > 0
-                   && x < WidthBorder + Map.CellSize * (Map.MapWidth / 2 - 1 + Player.InventorySize) &&
-                   y - HeightBorder - Map.CellSize * (Map.MapHeigh + 1) > 0
-                   && y < HeightBorder + Map.CellSize * (Map.MapHeigh + 2)
-                   && !Player.IsMoving;
-        }
-        
-        public void ChangeArrowVelocity(int row, int column, int index)
-        {
-            Map.IsProejectileFlying = true;
-            if (Player.Position.Item2 - column < 0)
-            {
-                Guns[index].DirX = -5;
-                Guns[index].PurposeX = (Player.Position.Item2 + 1) * Map.CellSize + WidthBorder - 25;
-                Guns[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder;
-            }
-
-            if (Player.Position.Item2 - column > 0)
-            {
-                Guns[index].DirX = 5;
-                Guns[index].PurposeX = Player.Position.Item2 * Map.CellSize + WidthBorder - 25;
-                Guns[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder;
-                Guns[index].Image.RotateFlip(RotateFlipType.Rotate180FlipY);
-            }
-            
-            if (Player.Position.Item1 - row < 0)
-            {
-                Guns[index].DirY = -5;
-                Guns[index].PurposeX = Player.Position.Item2 * Map.CellSize + WidthBorder;
-                Guns[index].PurposeY = (Player.Position.Item1 + 1) * Map.CellSize + HeightBorder - 25;
-                Guns[index].Image.RotateFlip(RotateFlipType.Rotate270FlipY);
-            }
-            
-            if (Player.Position.Item1 - row > 0)
-            {
-                Guns[index].DirY = 5;
-                Guns[index].PurposeX = Player.Position.Item2  * Map.CellSize + WidthBorder;
-                Guns[index].PurposeY = Player.Position.Item1 * Map.CellSize + HeightBorder - 25;
-                Guns[index].Image.RotateFlip(RotateFlipType.Rotate90FlipY);
-            }
-        }
-
-        public void ClickOnInventory(int x, int y)
-        {
-            var column = (x - WidthBorder)/ Map.CellSize;
-            var row = (y - HeightBorder)/ Map.CellSize;
-            Drawing.DrawRectangle(row, column, Color.Gold, CreateGraphics());
-            Player.IsInventoryPressed = true;
-            Player.PressedInventoryPosition = column - Map.MapWidth/2 + 1;
-        }
-
-        public void MoveOnMouse(object sender, MouseEventArgs e)
+        private void MoveOnMouse(object sender, MouseEventArgs e)
         {
             if (Map.MapPressed(e.X, e.Y, e.Button, Player.IsMoving) && !Player.IsInventoryPressed 
                                                                     && Player.IsHaveSteps 
@@ -334,7 +246,7 @@ namespace LookAtTheSteps
             if (Player.IsInventoryPressed && Player.IsHaveSteps && Player.IsAlive) //ситуация когда ты нечаянно нажал на инвентарь, нужно убрать свой ход
                 Player.IsInventoryPressed = false;
 
-            if (PlayerInventoryPressed(e.X, e.Y, e.Button) && !Map.IsPressed && !Map.IsProejectileFlying &&
+            if (Interface.PlayerInventoryPressed(e.X, e.Y, e.Button, Player) && !Map.IsPressed && !Map.IsProejectileFlying &&
                 Player.IsHaveSteps && Player.IsAlive)
             {
                 if (Player.PressedInventoryPosition != -1)
@@ -342,7 +254,7 @@ namespace LookAtTheSteps
                     var row = (e.Y - HeightBorder)/ Map.CellSize;
                     Drawing.DrawRectangle(row, Player.PressedInventoryPosition + Map.MapWidth/2 - 1, Color.Black, CreateGraphics());
                 }
-                ClickOnInventory(e.X, e.Y);
+                Interface.ClickOnInventory(e.X, e.Y, CreateGraphics(), Player);
             } // берем вещь из инвентаря
         }
 

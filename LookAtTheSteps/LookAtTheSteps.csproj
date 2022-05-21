@@ -46,17 +46,20 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Gun.cs" />
-        <Compile Include="Drawing.cs" />
+        <Compile Include="Drawing\Drawing.cs" />
+        <Compile Include="Environment\Gun.cs" />
+        <Compile Include="Environment\Interface.cs" />
+        <Compile Include="Environment\Player.cs" />
+        <Compile Include="Environment\Shooting.cs" />
+        <Compile Include="Environment\Velocity.cs" />
         <Compile Include="Form1.cs">
             <SubType>Form</SubType>
         </Compile>
         <Compile Include="Form1.Designer.cs">
             <DependentUpon>Form1.cs</DependentUpon>
         </Compile>
-        <Compile Include="Level.cs" />
+        <Compile Include="Model\Level.cs" />
         <Compile Include="Model\Map.cs" />
-        <Compile Include="Player.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <EmbeddedResource Include="Form1.resx">
