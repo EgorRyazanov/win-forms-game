@@ -28,7 +28,6 @@ namespace LookAtTheSteps
             GameMenu = new System.Windows.Forms.Button();
             FirstLevel = new System.Windows.Forms.Button();
             ExitButtom = new System.Windows.Forms.Button();
-            Inventory = new System.Windows.Forms.Label();
             Health = new System.Windows.Forms.Label();
             Win = new System.Windows.Forms.Label();
             NextLevel = new System.Windows.Forms.Button();
@@ -56,8 +55,10 @@ namespace LookAtTheSteps
                                "Для усложнения процесса на уровнях есть различные препятствия: лава и пушки, гарантированно наносящие персонажу урон." +
                                "\n" +
                                "Также присутствует объект, который можно забрать в инвентарь - камень, с его помощью вы можете закрывать лаву, тем самым превращая ее в проходимый квадратик." +
-                               "\n" +
+                               "\n" + 
                                "Чтобы взять камень в инвентарь нужно сблизиться с ним до дистанции не более 1 клетки, далее нажать на него и подтвердить решение повторным кликом в ту же область." +
+                               "\n" +
+                               "Сам же инвентарь находится под картой и выделен розовым цветом." + 
                                "\n" +
                                "Чтобы поставить камень, нужно нажать на клеточку в инвентаре и кликнуть в зону рядом с собой, также не более 1 клетки." + "\n" + 
                                "Ставить камень можно только в пустую клетку и в лаву." + 
@@ -141,19 +142,8 @@ namespace LookAtTheSteps
             ExitButtom.Text = "Выход";
             ExitButtom.UseVisualStyleBackColor = false;
             ExitButtom.Click += new System.EventHandler(this.Exit);
-            
-            
-            Inventory.BackColor = System.Drawing.Color.Transparent;
-            Inventory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            Inventory.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            Inventory.Location = new System.Drawing.Point(955, 910);
-            Inventory.Name = "Inventory";
-            Inventory.Size = new System.Drawing.Size(140, 50);
-            Inventory.TabIndex = 5;
-            Inventory.Text = "Инвентарь";
-            Inventory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            
-            
+
+
             Health.BackColor = System.Drawing.Color.Transparent;
             Health.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             Health.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
@@ -326,7 +316,6 @@ namespace LookAtTheSteps
             Controls.Add(NextLevel);
             Controls.Add(Win);
             Controls.Add(Health);
-            Controls.Add(Inventory);
             Controls.Add(ExitButtom);
             Controls.Add(FirstLevel);
             Controls.Add(GameMenu);
@@ -362,8 +351,6 @@ namespace LookAtTheSteps
         private System.Windows.Forms.Label Win;
 
         private System.Windows.Forms.Label Health;
-
-        private System.Windows.Forms.Label Inventory;
 
         private System.Windows.Forms.Button ExitButtom;
 

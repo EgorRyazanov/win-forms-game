@@ -34,7 +34,6 @@ namespace LookAtTheSteps
             Back.Hide();
             ZeroLevel.Hide();
             FirstLevel.Hide();
-            Inventory.Hide();
             ShowMoves.Hide();
             GameMenu.Hide();
             Health.Hide();
@@ -115,7 +114,6 @@ namespace LookAtTheSteps
                     NextLevel.Show();
                 ShowMoves.Hide();
                 Health.Hide();
-                Inventory.Hide();
                 Win.Show();
                 StepsText.Hide();
                 HealthText.Hide();
@@ -127,7 +125,6 @@ namespace LookAtTheSteps
                 Invalidate();
                 Lose.Show();
                 Health.Hide();
-                Inventory.Hide();
                 ShowMoves.Hide();
                 StepsText.Hide();
                 HealthText.Hide();
@@ -288,7 +285,6 @@ namespace LookAtTheSteps
             ExitButtom.Show();
             GameMenu.Hide();
             ShowMoves.Hide();
-            Inventory.Hide();
             HealthText.Hide();
             StepsText.Hide();
             Health.Hide();
@@ -322,7 +318,6 @@ namespace LookAtTheSteps
             Health.Show();
             HealthText.Show();
             StepsText.Show();
-            Inventory.Show();
             PlayButtom.Hide();
             RestartButtom.Show();
             ShowInstruction.Show();
@@ -351,7 +346,6 @@ namespace LookAtTheSteps
             Health.Show();
             HealthText.Show();
             StepsText.Show();
-            Inventory.Show();
             Invalidate();
         }
 
@@ -392,7 +386,6 @@ namespace LookAtTheSteps
             Health.Show();
             HealthText.Show();
             StepsText.Show();
-            Inventory.Show();
             PlayButtom.Hide();
             RestartButtom.Show();
             ShowInstruction.Show();
@@ -412,7 +405,6 @@ namespace LookAtTheSteps
             Init();
             ShowMoves.Show();
             Health.Show();
-            Inventory.Show();
             HealthText.Show();
             StepsText.Show();
             Instruction.Hide();
@@ -426,7 +418,6 @@ namespace LookAtTheSteps
         {
             Instruction.Show();
             Health.Hide();
-            Inventory.Hide();
             HealthText.Hide();
             StepsText.Hide();
             ShowInstruction.Hide();
@@ -439,7 +430,6 @@ namespace LookAtTheSteps
         {
             Instruction.Hide();
             Health.Show();
-            Inventory.Show();
             HealthText.Show();
             StepsText.Show();
             ShowMoves.Show();
@@ -450,7 +440,6 @@ namespace LookAtTheSteps
             if (IsLose || IsWin)
             {
                 Health.Hide();
-                Inventory.Hide();
                 HealthText.Hide();
                 StepsText.Hide();
                 ShowMoves.Hide();
